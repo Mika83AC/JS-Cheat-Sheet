@@ -32,9 +32,7 @@ Objects can be easily composed together into new objects with `Object.assign()`.
 
 ```
 const oA = { a: 'a' };
-
 const oB = { b: 'b' };
-
 const c = Object.assign({}, oA, oB); // c becomes { a: 'a', b: 'b' }
 ```
 
