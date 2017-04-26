@@ -28,8 +28,12 @@ An object in JavaScript is a collection of key: value pairs.
 `const foo = { bar: 'bar' }` -> With a given name.
 
 #### Composing Objects
-Objects can be easily composed together into new objects.
+Objects can be easily composed together into new objects with `Object.assign()`.
 
 `const oA = { a: 'a' };
+
 const oB = { b: 'b' };
+
 const c = Object.assign({}, oA, oB); // c becomes { a: 'a', b: 'b' }`
+
+Note that when you use `Object.assign()`, you must pass a destination object as the first parameter. It is the object that properties will be copied to. If you forget, and omit the destination object, the object you pass in the first argument will be mutated.
