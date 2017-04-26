@@ -310,7 +310,82 @@ console.log(startsWithS(wordArray)); // [ 'gasp' ]
 
 Source: https://medium.com/javascript-scene/higher-order-functions-composing-software-5365cf2cbe99
 
+### Pure functions
+Pure functions depend only on the inputs of the function, and the output should be the exact same for the same input.
+
+```
+// pure function
+const add10 = (a) => a + 10
+// impure function due to external non-constants
+let x = 10
+const addx = (a) => a + x
+// also impure due to side-effect
+const setx = (v) => x = v
+```
+
+Use whenever possible, because they are clean and have no side-effects to worry about.
+
 ## Functors
 Still very confusing to be but seems important!
 
 See: https://medium.com/javascript-scene/functors-categories-61e031bac53f
+
+
+# Examples of nice functional programming
+
+## The greeting mess
+
+We need to greet a user on login. Easy:
+
+`const greeting = (name) => `Hello ${name}`
+
+But wait ... we need more greeting text:
+
+```
+const greeting = (name, male=false, female=false) =>
+  `Hello ${male ? ‘Mr. ‘ : female ? ‘Ms. ‘ : ‘’} ${name}`
+```
+
+Now it starts getting messier, and we still need moooore greeting text! What now? More parameters, more ifs?
+
+No, just write and compose pure functions!
+
+```
+const formalGreeting = (name) => `Hello ${name}`;
+const casualGreeting = (name) => `Sup ${name}`;
+const male = (name) => `Mr. ${name}`;
+const female = (name) => `Mrs. ${name}`;
+const doctor = (name) => `Dr. ${name}`;
+const phd = (name) => `${name} PhD`;
+const md = (name) => `${name} M.D.`;
+
+formalGreeting(male(phd("Chet"))); // => "Hello Mr. Chet PhD"
+```
+
+This is a nice approach, but a litte unhandy in use. So lets do this:
+
+```
+const pipe = (fns) => (x) => fns.reduce((v, f) => f(v), x); // a helper for 'chaining' functions
+
+const identity = (x) => x; // Simply returns the input value
+const greet = (name, options) => {
+   return pipe([
+      // greeting    
+      options.formal ? formalGreeting :
+      casualGreeting,
+
+      // prefix
+      options.doctor ? doctor :
+      options.male ? male :
+      options.female ? female :
+      identity,
+
+      // suffix
+      options.phd ? phd :
+      options.md ?md :
+      identity
+   ])(name)
+};
+```
+
+Yeah! Thats nice, readable, extensible and good code! :)
