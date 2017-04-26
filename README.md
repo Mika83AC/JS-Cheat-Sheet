@@ -25,7 +25,7 @@
     - [Method Chaining](#method-chaining)
     - [Higher-Order-Functions](#higher-order-functions)
     - [Pure functions](#pure-functions)
-  - [Functors](#functors)
+  - [Monads, Functors, and Fancy Words](#monads-functors-and-fancy-words)
 - [Examples of nice functional programming](#examples-of-nice-functional-programming)
   - [The greeting mess](#the-greeting-mess)
 
@@ -206,7 +206,7 @@ shiftToLast(1, 2, 3); // [2, 3, 1]
 ```
 
 ### Currying
-!!! Still need a good vanilla JS example !!!
+Maybe to complicated to be used because of easily made errors! Avoid when possible.
 
 ### Function composition
 ```
@@ -298,7 +298,7 @@ const setx = (v) => x = v
 Use whenever possible, because they are clean and have no side-effects to worry about.
 
 ## Monads, Functors, and Fancy Words
-Monads can be thought of as a container for a value, and to open up the container and do something to the value, you need to map over it. Here’s a simple example:
+Monads can be thought of as a container for a value, and to open up the container and do something to the value, you need to map over it. Array.filter() is a functor/monad!. Here’s a simple example:
 
 ```
 const inc = n => n + 1;
