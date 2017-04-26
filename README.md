@@ -12,6 +12,19 @@ Hopefully best practices in modern JS.
 
 Once variables with `const` or `let` are declared, any attemp to declare them again will fail.
 
+### Shorthands
+```
+const [t, u] = ['a', 'b'];
+t; // 'a'
+u; // 'b'
+```
+
+```
+const { type, payload } = action;
+type; // content of action.type
+payload; // content of action.payload
+```
+
 ## Types
 ### Arrays
 An ordered list of values.
@@ -37,3 +50,21 @@ const c = Object.assign({}, oA, oB); // c becomes { a: 'a', b: 'b' }
 ```
 
 Note that when you use `Object.assign()`, you must pass a destination object as the first parameter. It is the object that properties will be copied to. If you forget, and omit the destination object, the object you pass in the first argument will be mutated.
+
+## Comparisons
+Use the `===` comparison whenever possible. It has strict type cheching:
+
+```
+3 + 1 === 4; // true
+3 + 1 === '4'; // false
+```
+
+Using just `==` has no type checking:
+
+```
+3 + 1 == 4; // true
+3 + 1 == '4'; // true
+```
+
+## Ternaries (IF shorthand)
+`14 - 7 === 7 ? 'Yep!' : 'Nope.'; // Yep!`
