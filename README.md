@@ -33,7 +33,13 @@ An ordered list of values.
 
 `const arr = [1, 2, 3];` -> With a given name.
 
-#### Array.Map()
+#### Array.filter()
+```
+const greater2 = x => x > 2;
+[2, 4, 6].filter(greater2); // [4, 6]
+```
+
+#### Array.map()
 ```
 const double = x => x * 2;
 const arr = [1, 2, 3];
@@ -47,6 +53,15 @@ Note that we’re passing the `double` function as a value into `map` rather tha
 Note that the original arr value is unchanged:
 
 `arr; // [1, 2, 3]`
+
+#### Array.reduce()
+```
+const arr = [1, 2, 3];
+var totalAmount = arr.reduce(function(sum, item) {
+   return sum + item
+}, 0)
+totalAmount; // 6
+```
 
 ### Objects
 An object in JavaScript is a collection of key: value pairs.
@@ -190,3 +205,9 @@ You can pass any expression as an argument to a function. The expression will be
 `inc(double(2) * double(2)); // 17`
 
 Since `double(2)` evaluates to `4`, you can read that as `inc(4 * 4)` which evaluates to `inc(16)` which then evaluates to `17`.
+
+### Method Chaining
+```
+const arr = [1, 2, 3];
+arr.map(double).map(double); // [4, 8, 12]
+```
