@@ -68,3 +68,18 @@ Using just `==` has no type checking:
 
 ## Ternaries (IF shorthand)
 `14 - 7 === 7 ? 'Yep!' : 'Nope.'; // Yep!`
+
+## Functions
+```
+const double = function(x) {
+   return x * 2;
+}
+```
+
+equals
+
+`const double = x => x * 2;`
+
+You can see the function definition using the `.toString()` method:
+
+`double.toString(); // 'x => x * 2'`
