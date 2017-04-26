@@ -1,28 +1,35 @@
 # JS-Cheat-Sheet
 Hopefully best practices in modern JS.
 
-- [JS-Cheat-Sheet](#)
-	- [Variable declarations](#)
-		- [var, let & const](#)
-			- [Shorthands](#)
-	- [Types](#)
-		- [Arrays](#)
-			- [Array.filter()](#)
-			- [Array.map()](#)
-			- [Array.reduce()](#)
-		- [Objects](#)
-			- [Composing Objects](#)
-	- [Comparisons](#)
-	- [Ternaries (IF shorthand)](#)
-	- [Functions](#)
-		- [Default parameter values](#)
-		- [Named arguments](#)
-		- [Rest and Spread](#)
-		- [Currying](#)
-		- [Function composition](#)
-			- [compose(), be careful](#)
-		- [Method Chaining](#)
-		- [Higher-Order-Functions](#)
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [JS-Cheat-Sheet](#js-cheat-sheet)
+  - [Variable declarations](#variable-declarations)
+    - [var, let & const](#var-let--const)
+      - [Shorthands](#shorthands)
+  - [Types](#types)
+    - [Arrays](#arrays)
+      - [Array.filter()](#arrayfilter)
+      - [Array.map()](#arraymap)
+      - [Array.reduce()](#arrayreduce)
+    - [Objects](#objects)
+      - [Composing Objects](#composing-objects)
+  - [Comparisons](#comparisons)
+  - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
+  - [Functions](#functions)
+    - [Default parameter values](#default-parameter-values)
+    - [Named arguments](#named-arguments)
+    - [Rest and Spread](#rest-and-spread)
+    - [Currying](#currying)
+    - [Function composition](#function-composition)
+      - [compose(), be careful](#compose-be-careful)
+    - [Method Chaining](#method-chaining)
+    - [Higher-Order-Functions](#higher-order-functions)
+  - [Functors](#functors)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Variable declarations
 ### var, let & const
