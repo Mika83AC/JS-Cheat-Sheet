@@ -1,6 +1,3 @@
-# JS-Cheat-Sheet
-Hopefully best practices in modern JS.
-
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
@@ -27,9 +24,15 @@ Hopefully best practices in modern JS.
       - [compose(), be careful](#compose-be-careful)
     - [Method Chaining](#method-chaining)
     - [Higher-Order-Functions](#higher-order-functions)
+    - [Pure functions](#pure-functions)
   - [Functors](#functors)
+- [Examples of nice functional programming](#examples-of-nice-functional-programming)
+  - [The greeting mess](#the-greeting-mess)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+# JS-Cheat-Sheet
+Hopefully best practices in modern JS.
 
 ## Variable declarations
 ### var, let & const
