@@ -157,7 +157,21 @@ equals
 
 `const double = x => x * 2;`
 
-IMPORTANT: `=>` lacks its own `this`, and can't be used as a constructor.
+IMPORTANT: `=>` lacks its own `this` and `arguments`. Also it can't be used as a constructor.
+
+Old way with `arguments`:
+
+```
+var sum = function(){
+	var args = [].slice.call(arguments)
+	  .reduce(function(a, b){ return a + b })
+}
+sum(1, 2, 3, 4) //=== 10
+```
+
+With arrow function:
+
+`var sum = (...numbers) => numbers.reduce((a, b) => a + b)`
 
 ### Default parameter values
 ```
