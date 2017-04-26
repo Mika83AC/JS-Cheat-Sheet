@@ -17,4 +17,19 @@ Once variables with `const` or `let` are declared, any attemp to declare them ag
 An ordered list of values.
 
 `[1, 2, 3];` -> The literal notation.
+
 `const arr = [1, 2, 3];` -> With a given name.
+
+### Objects
+An object in JavaScript is a collection of key: value pairs.
+
+`{ key: 'value' }` -> The literal notation.
+
+`const foo = { bar: 'bar' }` -> With a given name.
+
+#### Composing Objects
+Objects can be easily composed together into new objects.
+
+`const oA = { a: 'a' };
+const oB = { b: 'b' };
+const c = Object.assign({}, oA, oB); // c becomes { a: 'a', b: 'b' }`
