@@ -80,6 +80,48 @@ equals
 
 `const double = x => x * 2;`
 
-You can see the function definition using the `.toString()` method:
+### Default parameter values
+```
+const orZero = (n = 0) => n;
+orZero(); // 0
+orZero(2); // 2
+orZero(undefined); // 0
+```
 
-`double.toString(); // 'x => x * 2'`
+### Named arguments
+```
+const createUser = ({
+   name = 'Anonymous',
+   avatarThumbnail = '/anonymous.png'
+   }) => ({
+     name,
+     avatarThumbnail
+   });
+
+const george = createUser({
+   name: 'George',
+   avatarThumbnail: 'george.png'
+});
+george;
+/*
+{
+   name: 'George',
+   avatarThumbnail: 'george.png'
+}
+*/
+```
+
+### Rest and Spread
+For example, the following function simply discards the first argument and returns the rest as an array:
+
+```
+const aTail = (head, ...tail) => tail;
+aTail(1, 2, 3); // [2, 3]
+```
+
+Spread does the opposite: it spreads the elements from an array to individual elements. Consider this:
+
+```
+const shiftToLast = (head, ...tail) => [...tail, head];
+shiftToLast(1, 2, 3); // [2, 3, 1]
+```
