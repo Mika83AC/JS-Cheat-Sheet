@@ -204,6 +204,35 @@ george;
 */
 ```
 
+### Recursion
+ES5 has a call stack limit! ES6 has removed it!
+
+```
+let categories = [
+   {id: 'animals', parent: null},
+   {id: 'mammmals', parent: 'animals'},
+   {id: 'cats', parent: 'mammmals'},
+   {id: 'dogs', parent: 'mammmals'},
+   {id: 'chihuahua', parent: 'dogs'},
+   {id: 'labrador', parent: 'dogs'},
+   {id: 'siamese', parent: 'cats'},
+   {id: 'persian', parent: 'cats'},
+]
+
+let makeTree = (categories, parent) => {
+   let node = {};
+   categories
+      .filter(c => c.parent === parent)
+      .forEach(c => node[c.id] = makeTree(categories, c.id));
+   return node;
+}
+
+console.log(
+   JSON.stringify(makeTree(categories, null), null, 2)
+);
+```
+
+
 ### Rest and Spread
 For example, the following function simply discards the first argument and returns the rest as an array:
 
