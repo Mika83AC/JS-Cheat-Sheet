@@ -1,6 +1,29 @@
 # JS-Cheat-Sheet
 Hopefully best practices in modern JS.
 
+- [JS-Cheat-Sheet](#)
+	- [Variable declarations](#)
+		- [var, let & const](#)
+			- [Shorthands](#)
+	- [Types](#)
+		- [Arrays](#)
+			- [Array.filter()](#)
+			- [Array.map()](#)
+			- [Array.reduce()](#)
+		- [Objects](#)
+			- [Composing Objects](#)
+	- [Comparisons](#)
+	- [Ternaries (IF shorthand)](#)
+	- [Functions](#)
+		- [Default parameter values](#)
+		- [Named arguments](#)
+		- [Rest and Spread](#)
+		- [Currying](#)
+		- [Function composition](#)
+			- [compose(), be careful](#)
+		- [Method Chaining](#)
+		- [Higher-Order-Functions](#)
+
 ## Variable declarations
 ### var, let & const
 `const` is the most strict declaration and can't be reassigned. It should be used as default whereever possible.
@@ -279,3 +302,8 @@ console.log(startsWithS(wordArray)); // [ 'gasp' ]
 ```
 
 Source: https://medium.com/javascript-scene/higher-order-functions-composing-software-5365cf2cbe99
+
+## Functors
+Still very confusing to be but seems important!
+
+See: https://medium.com/javascript-scene/functors-categories-61e031bac53f
