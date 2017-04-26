@@ -42,13 +42,10 @@ const greater2 = x => x > 2;
 #### Array.map()
 ```
 const double = x => x * 2;
-const arr = [1, 2, 3];
-arr.map(double); // [2, 4, 6]
+[1, 2, 3].map(double); // [2, 4, 6]
 ```
 
 In this case, `arr` is the object, `.map()` is a property of the object with a function for a value. When you invoke it, the function gets applied to the arguments, as well as a special parameter called `this`, which gets automatically set when the method is invoked. The `this` value is how `.map()` gets access to the contents of the array.
-
-Note that we’re passing the `double` function as a value into `map` rather than calling it. That's because `map` takes a function as an argument and applies it to each item in the array. It returns a new array containing the values returned by `double()`.
 
 Note that the original arr value is unchanged:
 
@@ -60,6 +57,14 @@ const arr = [1, 2, 3];
 var totalAmount = arr.reduce(function(sum, item) {
    return sum + item
 }, 0)
+totalAmount; // 6
+```
+
+equals
+
+```
+const arr = [1, 2, 3];
+var totalAmount = arr.reduce((sum, item) => sum + item, 0)
 totalAmount; // 6
 ```
 
@@ -211,3 +216,26 @@ Since `double(2)` evaluates to `4`, you can read that as `inc(4 * 4)` which eval
 const arr = [1, 2, 3];
 arr.map(double).map(double); // [4, 8, 12]
 ```
+
+### Higher-Order-Functions
+How JavaScripts Array.filter() is build:
+
+```
+const reduce = (reducer, initial, arr) => {
+   let acc = initial;
+   for (let i = 0, length = arr.length; i < length; i++) {
+      acc = reducer(acc, arr[i]);
+   }
+   return acc;
+};
+
+const filter = (fn, arr) =>
+   reduce((acc, curr) =>
+      fn(curr) ? acc.concat([curr]) : acc, [], arr
+   );
+
+const getUnequalLength4 = words => filter(word => word.length !== 4, words);
+const startsWithS = words => filter(word => word.startsWith('s'), words);
+```
+
+Source: https://medium.com/javascript-scene/higher-order-functions-composing-software-5365cf2cbe99
