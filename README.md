@@ -33,6 +33,21 @@ An ordered list of values.
 
 `const arr = [1, 2, 3];` -> With a given name.
 
+### Array.Map()
+```
+const double = x => x * 2;
+const arr = [1, 2, 3];
+arr.map(double); // [2, 4, 6]
+```
+
+In this case, `arr` is the object, `.map()` is a property of the object with a function for a value. When you invoke it, the function gets applied to the arguments, as well as a special parameter called `this`, which gets automatically set when the method is invoked. The `this` value is how `.map()` gets access to the contents of the array.
+
+Note that we’re passing the `double` function as a value into `map` rather than calling it. That's because `map` takes a function as an argument and applies it to each item in the array. It returns a new array containing the values returned by `double()`.
+
+Note that the original arr value is unchanged:
+
+`arr; // [1, 2, 3]`
+
 ### Objects
 An object in JavaScript is a collection of key: value pairs.
 
