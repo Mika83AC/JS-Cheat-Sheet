@@ -64,7 +64,16 @@ equals
 
 ```
 const arr = [1, 2, 3];
-var totalAmount = arr.reduce((sum, item) => sum + item, 0)
+const summingReducer = (acc, n) => acc + n;
+var totalAmount = arr.reduce(summingReducer, 0)
+totalAmount; // 6
+```
+
+equals
+
+```
+const arr = [1, 2, 3];
+var totalAmount = arr.reduce((acc, n) => acc + n, 0)
 totalAmount; // 6
 ```
 
@@ -211,6 +220,33 @@ You can pass any expression as an argument to a function. The expression will be
 
 Since `double(2)` evaluates to `4`, you can read that as `inc(4 * 4)` which evaluates to `inc(16)` which then evaluates to `17`.
 
+###### compose(), be careful
+```
+const add1 = n => n + 1;
+const double = n => n * 2;
+const add1ThenDouble = compose(
+  double,
+  add1
+);
+add1ThenDouble(2); // 6
+// ((2 + 1 = 3) * 2 = 6)
+```
+
+So be aware, `compose()` evaluates right-to-left!! A solution to this is:
+
+`const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);`
+
+Now you can write add1ThenDouble() like this:
+
+```
+const add1ThenDouble = pipe(
+  add1,
+  double
+);
+add1ThenDouble(2); // 6
+// ((2 + 1 = 3) * 2 = 6)
+```
+
 ##### Method Chaining
 ```
 const arr = [1, 2, 3];
@@ -234,10 +270,10 @@ const filter = (fn, arr) =>
       fn(curr) ? acc.concat([curr]) : acc, [], arr
 );
 
-const wordArray = ['oops', 'gasp', 'shout', 'sun'];
 const censor = words => filter(word => word.length !== 4, words);
 const startsWithS = words => filter(word => word.startsWith('g'), words);
 
+const wordArray = ['oops', 'gasp', 'shout', 'sun'];
 console.log(censor(wordArray)); // [ 'shout', 'sun' ]
 console.log(startsWithS(wordArray)); // [ 'gasp' ]
 ```
