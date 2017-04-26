@@ -12,7 +12,7 @@ Hopefully best practices in modern JS.
 
 Once variables with `const` or `let` are declared, any attemp to declare them again will fail.
 
-### Shorthands
+##### Shorthands
 ```
 const [t, u] = ['a', 'b'];
 t; // 'a'
@@ -33,13 +33,13 @@ An ordered list of values.
 
 `const arr = [1, 2, 3];` -> With a given name.
 
-#### Array.filter()
+##### Array.filter()
 ```
 const greater2 = x => x > 2;
 [2, 4, 6].filter(greater2); // [4, 6]
 ```
 
-#### Array.map()
+##### Array.map()
 ```
 const double = x => x * 2;
 [1, 2, 3].map(double); // [2, 4, 6]
@@ -51,7 +51,7 @@ Note that the original arr value is unchanged:
 
 `arr; // [1, 2, 3]`
 
-#### Array.reduce()
+##### Array.reduce()
 ```
 const arr = [1, 2, 3];
 var totalAmount = arr.reduce(function(sum, item) {
@@ -75,7 +75,7 @@ An object in JavaScript is a collection of key: value pairs.
 
 `const foo = { bar: 'bar' }` -> With a given name.
 
-#### Composing Objects
+##### Composing Objects
 Objects can be easily composed together into new objects with `Object.assign()`.
 
 ```
@@ -117,7 +117,7 @@ equals
 
 IMPORTANT: `=>` lacks its own `this`, and can't be used as a constructor.
 
-### Default parameter values
+##### Default parameter values
 ```
 const orZero = (n = 0) => n;
 orZero(); // 0
@@ -125,7 +125,7 @@ orZero(2); // 2
 orZero(undefined); // 0
 ```
 
-### Named arguments
+##### Named arguments
 ```
 const createUser = ({
    name = 'Anonymous',
@@ -148,7 +148,7 @@ george;
 */
 ```
 
-### Rest and Spread
+##### Rest and Spread
 For example, the following function simply discards the first argument and returns the rest as an array:
 
 ```
@@ -163,7 +163,7 @@ const shiftToLast = (head, ...tail) => [...tail, head];
 shiftToLast(1, 2, 3); // [2, 3, 1]
 ```
 
-### Currying
+##### Currying
 ```
 const highpass = function highpass(cutoff) {
   return function (n) {
@@ -197,7 +197,7 @@ add3(1)(2, 3); // 6
 add3(1)(2)(3); // 6
 ```
 
-### Function composition
+##### Function composition
 ```
 const inc = n => n + 1;
 inc(double(2)); // 5
@@ -211,13 +211,13 @@ You can pass any expression as an argument to a function. The expression will be
 
 Since `double(2)` evaluates to `4`, you can read that as `inc(4 * 4)` which evaluates to `inc(16)` which then evaluates to `17`.
 
-### Method Chaining
+##### Method Chaining
 ```
 const arr = [1, 2, 3];
 arr.map(double).map(double); // [4, 8, 12]
 ```
 
-### Higher-Order-Functions
+##### Higher-Order-Functions
 How JavaScripts Array.filter() (a very very flexible base function!) is build:
 
 ```
