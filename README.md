@@ -206,38 +206,7 @@ shiftToLast(1, 2, 3); // [2, 3, 1]
 ```
 
 ### Currying
-```
-const highpass = function highpass(cutoff) {
-  return function (n) {
-    return n >= cutoff;
-  };
-};
-```
-
-equals
-
-`const highpass = cutoff => n => n >= cutoff;`
-
-Since `highpass()` returns a function, you can use it to create a more specialized function:
-
-```
-const gt4 = highpass(4);
-gt4(6); // true
-gt4(3); // false
-```
-
-Autocurry lets you curry functions automatically, for maximal flexibility. Say you have a function `add3()`:
-
-`const add3 = curry((a, b, c) => a + b + c);`
-
-With autocurry, you can use it in several different ways, and it will return the right thing depending on how many arguments you pass in:
-
-```
-add3(1, 2, 3); // 6
-add3(1, 2)(3); // 6
-add3(1)(2, 3); // 6
-add3(1)(2)(3); // 6
-```
+!!! Still need a good vanilla JS example !!!
 
 ### Function composition
 ```
@@ -328,8 +297,22 @@ const setx = (v) => x = v
 
 Use whenever possible, because they are clean and have no side-effects to worry about.
 
-## Functors
-Still very confusing to be but seems important!
+## Monads, Functors, and Fancy Words
+Monads can be thought of as a container for a value, and to open up the container and do something to the value, you need to map over it. Here’s a simple example:
+
+```
+const inc = n => n + 1;
+const isZero = n => n === 0;
+// monad
+list = [-1,0,1]
+list.map(inc) // => [0,1,2]
+list.map(isZero) // => [false, true, false]
+```
+
+```
+list.map(inc).map(isZero) // => [true, false, false]
+list.map(compose(isZero, inc)) // => [true, false, false]
+```
 
 See: https://medium.com/javascript-scene/functors-categories-61e031bac53f
 
