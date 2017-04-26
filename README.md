@@ -80,6 +80,8 @@ equals
 
 `const double = x => x * 2;`
 
+IMPORTANT: `=>` lacks its own `this`, and can't be used as a constructor.
+
 ### Default parameter values
 ```
 const orZero = (n = 0) => n;
@@ -125,3 +127,20 @@ Spread does the opposite: it spreads the elements from an array to individual el
 const shiftToLast = (head, ...tail) => [...tail, head];
 shiftToLast(1, 2, 3); // [2, 3, 1]
 ```
+
+### Currying
+```
+const highpass = function highpass(cutoff) {
+  return function (n) {
+    return n >= cutoff;
+  };
+};
+```
+
+equals
+
+`const highpass = cutoff => n => n >= cutoff;`
+
+You can read `const highpass = cutoff => n => n >= cutoff;` as:
+
+“`highpass` is a function which takes `cutoff` and returns a function which takes `n` and returns the result of `n >= cutoff`".
