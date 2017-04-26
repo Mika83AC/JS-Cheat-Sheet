@@ -33,7 +33,7 @@ An ordered list of values.
 
 `const arr = [1, 2, 3];` -> With a given name.
 
-### Array.Map()
+#### Array.Map()
 ```
 const double = x => x * 2;
 const arr = [1, 2, 3];
