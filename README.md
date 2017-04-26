@@ -218,7 +218,7 @@ arr.map(double).map(double); // [4, 8, 12]
 ```
 
 ### Higher-Order-Functions
-How JavaScripts Array.filter() is build:
+How JavaScripts Array.filter() (a very very flexible base function!) is build:
 
 ```
 const reduce = (reducer, initial, arr) => {
@@ -232,10 +232,14 @@ const reduce = (reducer, initial, arr) => {
 const filter = (fn, arr) =>
    reduce((acc, curr) =>
       fn(curr) ? acc.concat([curr]) : acc, [], arr
-   );
+);
 
-const getUnequalLength4 = words => filter(word => word.length !== 4, words);
-const startsWithS = words => filter(word => word.startsWith('s'), words);
+const wordArray = ['oops', 'gasp', 'shout', 'sun'];
+const censor = words => filter(word => word.length !== 4, words);
+const startsWithS = words => filter(word => word.startsWith('g'), words);
+
+console.log(censor(wordArray)); // [ 'shout', 'sun' ]
+console.log(startsWithS(wordArray)); // [ 'gasp' ]
 ```
 
 Source: https://medium.com/javascript-scene/higher-order-functions-composing-software-5365cf2cbe99
