@@ -32,7 +32,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # JS-Cheat-Sheet
-Hopefully best practices in modern JS.
+Hopefully best practices in modern JavaScript (ES6 and beyond).
 
 ## Variable declarations
 ### var, let & const
@@ -45,7 +45,7 @@ Hopefully best practices in modern JS.
 
 Once variables with `const` or `let` are declared, any attemp to declare them again will fail.
 
-#### Shorthands
+#### Shorthands with ES6 destructuring
 ```
 const [t, u] = ['a', 'b'];
 t; // 'a'
@@ -180,6 +180,21 @@ orZero(); // 0
 orZero(2); // 2
 orZero(undefined); // 0
 ```
+
+### Parameter destructuring with ES6
+function makeSound({species = 'animal', sound}) {
+   console.log('The ' + species + ' says ' + sound + '!');
+}
+
+makeSound({
+   weight:23,
+   sound: 'woof'
+})
+makeSound({
+   species: 'bird',
+   weight:23,
+   sound: 'chirp'
+})
 
 ### Named arguments
 ```
