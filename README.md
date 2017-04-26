@@ -141,6 +141,37 @@ equals
 
 `const highpass = cutoff => n => n >= cutoff;`
 
-You can read `const highpass = cutoff => n => n >= cutoff;` as:
+Since `highpass()` returns a function, you can use it to create a more specialized function:
 
-“`highpass` is a function which takes `cutoff` and returns a function which takes `n` and returns the result of `n >= cutoff`".
+```
+const gt4 = highpass(4);
+gt4(6); // true
+gt4(3); // false
+```
+
+Autocurry lets you curry functions automatically, for maximal flexibility. Say you have a function `add3()`:
+
+`const add3 = curry((a, b, c) => a + b + c);`
+
+With autocurry, you can use it in several different ways, and it will return the right thing depending on how many arguments you pass in:
+
+```
+add3(1, 2, 3); // 6
+add3(1, 2)(3); // 6
+add3(1)(2, 3); // 6
+add3(1)(2)(3); // 6
+```
+
+### Function composition
+```
+const inc = n => n + 1;
+inc(double(2)); // 5
+```
+
+The value `2` is passed into `double()`, which produces `4`. `4` is passed into `inc()` which evaluates to `5`.
+
+You can pass any expression as an argument to a function. The expression will be evaluated before the function is applied:
+
+`inc(double(2) * double(2)); // 17`
+
+Since `double(2)` evaluates to `4`, you can read that as `inc(4 * 4)` which evaluates to `inc(16)` which then evaluates to `17`.
