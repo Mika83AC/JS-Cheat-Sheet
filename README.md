@@ -22,7 +22,8 @@
   - [Functions](#functions)
     - [Default parameter values](#default-parameter-values)
     - [Parameter destructuring with ES6](#parameter-destructuring-with-es6)
-    - [Named arguments](#named-arguments)
+    - [Named parameters](#named-parameters)
+    - [Named Function Expressions](#named-function-expressions)
     - [Recursion](#recursion)
     - [Rest and Spread](#rest-and-spread)
     - [Currying](#currying)
@@ -317,27 +318,42 @@ makeSound({
 })
 ```
 
-### Named arguments
+### Named parameters
 ```
-const createUser = ({
-   name = 'Anonymous',
-   avatarThumbnail = '/anonymous.png'
-   }) => ({
-     name,
-     avatarThumbnail
-   });
+var userProto = {
+   name: '',
+   email: '',
+   alias: '',
+   showInSearch: true,
+   colorScheme: 'light'
+};
 
-const george = createUser({
-   name: 'George',
-   avatarThumbnail: 'george.png'
-});
-george;
-/*
-{
-   name: 'George',
-   avatarThumbnail: 'george.png'
+function createUser(options) {
+   return Object.assign({}, userProto, options);
 }
-*/
+
+var newUser = createUser({
+   name: 'Mike',
+   showInSearch: true
+});
+newUser;
+```
+
+### Named Function Expressions
+For better debugging, don't create anonymous functions at top-levels as this will be hard to stacktrace:
+```
+var lightbulbAPI = {
+    off: function() {},
+    on: function() {},
+};
+```
+
+Create:
+```
+var lightbulbAPI = {
+    off: function off() {},
+    on: function on() {},
+};
 ```
 
 ### Recursion
