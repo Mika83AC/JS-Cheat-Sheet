@@ -56,6 +56,28 @@ Hopefully best practices in modern JavaScript (ES6 and beyond).
 
 Once variables with `const` or `let` are declared, any attemp to declare them again will fail.
 
+### Declare all variables of a function on top of it
+Wrong: multiple var statements:
+```
+(function myScript() {
+  var x = true;
+  var y = true;
+  /* do some stuff with x and y */
+  var z = true;
+  /* do some stuff with z */
+}());
+```
+
+Right: one var per function:
+```
+(function myScript() {
+  var x = true,
+  y = true,
+  z = true;
+  /* do some stuff with x, y, and z */
+}());
+```
+
 #### Shorthands with ES6 destructuring
 ```
 const [t, u] = ['a', 'b'];
