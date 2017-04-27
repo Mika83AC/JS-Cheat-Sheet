@@ -27,9 +27,9 @@
     - [Method Chaining](#method-chaining)
     - [Higher-Order-Functions](#higher-order-functions)
     - [Pure functions](#pure-functions)
-    - ["Classes"](#classes)
-      - [Inheritance](#inheritance)
   - [Monads, Functors, and Fancy Words](#monads-functors-and-fancy-words)
+  - ["Classes" and it's better implementation, "Factories"](#classes-and-its-better-implementation-factories)
+    - [Inheritance](#inheritance)
 - [Examples of nice functional programming](#examples-of-nice-functional-programming)
   - [The greeting mess](#the-greeting-mess)
 
@@ -361,12 +361,6 @@ const setx = (v) => x = v
 
 Use whenever possible, because they are clean and have no side-effects to worry about.
 
-### "Classes"
-JavaScript has no classes! Even the ES6 `class` desugars to constructor functions!
-
-#### Inheritance
-However inheritance comes to life (factory functions, constructor functions or "classes"), don't think in terms of IS-A relationships, but in terms of HAS-A or CAN-DO relationships (composition!).
-
 ## Monads, Functors, and Fancy Words
 Monads can be thought of as a container for a value, and to open up the container and do something to the value, you need to map over it. Array.filter() is a functor/monad!. Here’s a simple example:
 
@@ -385,6 +379,18 @@ list.map(compose(isZero, inc)) // => [true, false, false]
 ```
 
 See: https://medium.com/javascript-scene/functors-categories-61e031bac53f
+
+## "Classes" and it's better implementation, "Factories"
+JavaScript has no classes! Even the ES6 `class` desugars to constructor functions! Use them only if unavoidable.
+
+See:
+
+https://medium.com/javascript-scene/javascript-factory-functions-vs-constructor-functions-vs-classes-2f22ceddf33e
+
+https://medium.com/javascript-scene/3-different-kinds-of-prototypal-inheritance-es6-edition-32d777fa16c9
+
+### Inheritance
+However inheritance comes to life (factory functions, constructor functions or "classes"), don't think in terms of IS-A relationships, but in terms of HAS-A or CAN-DO relationships (composition!).
 
 
 # Examples of nice functional programming
