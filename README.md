@@ -5,7 +5,7 @@
 - [JS-Cheat-Sheet](#js-cheat-sheet)
   - [Variable declarations](#variable-declarations)
     - [var, let & const](#var-let--const)
-      - [Shorthands](#shorthands)
+      - [Shorthands with ES6 destructuring](#shorthands-with-es6-destructuring)
   - [Types](#types)
     - [Arrays](#arrays)
       - [Array.filter()](#arrayfilter)
@@ -17,7 +17,9 @@
   - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
   - [Functions](#functions)
     - [Default parameter values](#default-parameter-values)
+    - [Parameter destructuring with ES6](#parameter-destructuring-with-es6)
     - [Named arguments](#named-arguments)
+    - [Recursion](#recursion)
     - [Rest and Spread](#rest-and-spread)
     - [Currying](#currying)
     - [Function composition](#function-composition)
@@ -25,6 +27,8 @@
     - [Method Chaining](#method-chaining)
     - [Higher-Order-Functions](#higher-order-functions)
     - [Pure functions](#pure-functions)
+    - ["Classes"](#classes)
+      - [Inheritance](#inheritance)
   - [Monads, Functors, and Fancy Words](#monads-functors-and-fancy-words)
 - [Examples of nice functional programming](#examples-of-nice-functional-programming)
   - [The greeting mess](#the-greeting-mess)
@@ -182,6 +186,7 @@ orZero(undefined); // 0
 ```
 
 ### Parameter destructuring with ES6
+```
 function makeSound({species = 'animal', sound}) {
    console.log('The ' + species + ' says ' + sound + '!');
 }
@@ -195,6 +200,7 @@ makeSound({
    weight:23,
    sound: 'chirp'
 })
+```
 
 ### Named arguments
 ```
@@ -354,6 +360,12 @@ const setx = (v) => x = v
 ```
 
 Use whenever possible, because they are clean and have no side-effects to worry about.
+
+### "Classes"
+JavaScript has no classes! Even the ES6 `class` desugars to constructor functions!
+
+#### Inheritance
+However inheritance comes to life (factory functions, constructor functions or "classes"), don't think in terms of IS-A relationships, but in terms of HAS-A or CAN-DO relationships (composition!).
 
 ## Monads, Functors, and Fancy Words
 Monads can be thought of as a container for a value, and to open up the container and do something to the value, you need to map over it. Array.filter() is a functor/monad!. Here’s a simple example:
