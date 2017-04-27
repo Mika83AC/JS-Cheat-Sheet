@@ -113,7 +113,7 @@ const greater2 = x => x > 2;
 arr.filter(greater2); // [4, 6]
 ```
 
-or
+equals
 
 `arr.filter(x => x > 2); // [4, 6]`
 
@@ -154,13 +154,15 @@ totalAmount; // 6
 
 `arr` itself keeps untouched.
 
-### Objects
-An object in JavaScript is a collection of key: value pairs.
+
+## Objects
+An object in JavaScript is a collection of "key: value" pairs.
 
 `{ key: 'value' }` -> The literal notation.
+
 `const foo = { bar: 'bar' }` -> With a given name.
 
-#### Composing Objects
+### Composing Objects
 Objects can be easily composed together into new objects with `Object.assign()`.
 
 ```
@@ -171,7 +173,7 @@ const c = Object.assign({}, oA, oB); // c becomes { a: 'a', b: 'b' }
 
 Note that when you use `Object.assign()`, you must pass a destination object as the first parameter. It is the object that properties will be copied to. If you forget, and omit the destination object, the object you pass in the first argument will be mutated.
 
-## Comparisons
+## Comparison
 Use the `===` comparison whenever possible. It has strict type cheching:
 ```
 3 + 1 === 4; // true
@@ -198,7 +200,6 @@ text = '';
 for (i = 0; i < length; i += 1) {
    text += count[i] + ' ';
 }
-return text;
 ```
 
 Better:
@@ -209,46 +210,18 @@ text = '';
 count.forEach(function (number) {
    text += number + ' ';
 });
-return text;
 ```
 
 And perhaps even better:
 ```
-var getCount = function getCount() {
-  var count = [1, 2, 3];
-
-  return count.reduce(function (previous, number) {
-    return previous + number + ' ';
-  }, '');
-};
+var count = [1, 2, 3];
+var text = count.reduce((sum, x) => sum + x + ' ', '');
 ```
 
-## Switch -> avoid
-Simple to miss the `break;`` statement which leads to difficult to find bugs.
+## Switch
+Simple to miss the `break;` statement which leads to difficult to find bugs.
 
-```
-function doAction(action) {
-  switch (action) {
-    case 'hack':
-      return 'hack';
-    break;
-
-    case 'slash':
-      return 'slash';
-    break;
-
-    case 'run':
-      return 'run';
-    break;
-
-    default:
-      throw new Error('Invalid action.');
-    break;
-  }
-}
-```
-
-Exchange with:
+So better exchange `switch`es with:
 ```
 function doAction(action) {
   var actions = {
