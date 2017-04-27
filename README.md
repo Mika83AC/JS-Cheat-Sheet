@@ -103,24 +103,30 @@ payload; // content of action.payload
 An ordered list of values.
 
 `[1, 2, 3];` -> The literal notation.
+
 `const arr = [1, 2, 3];` -> With a given name.
 
 #### Array.filter()
 ```
+const arr = [2, 4, 6];
 const greater2 = x => x > 2;
-[2, 4, 6].filter(greater2); // [4, 6]
+arr.filter(greater2); // [4, 6]
 ```
+
+or
+
+`arr.filter(x => x > 2); // [4, 6]`
+
+`arr` itself keeps untouched.
 
 #### Array.map()
 ```
+const arr = [1, 2, 3];
 const double = x => x * 2;
-[1, 2, 3].map(double); // [2, 4, 6]
+arr.map(double); // [2, 4, 6]
 ```
 
-In this case, `arr` is the object, `.map()` is a property of the object with a function for a value. When you invoke it, the function gets applied to the arguments, as well as a special parameter called `this`, which gets automatically set when the method is invoked. The `this` value is how `.map()` gets access to the contents of the array.
-
-Note that the original arr value is unchanged:
-`arr; // [1, 2, 3]`
+`arr` itself keeps untouched.
 
 #### Array.reduce()
 ```
@@ -132,19 +138,21 @@ totalAmount; // 6
 ```
 
 equals
+
 ```
-const arr = [1, 2, 3];
 const summingReducer = (acc, n) => acc + n;
 var totalAmount = arr.reduce(summingReducer, 0)
 totalAmount; // 6
 ```
 
 equals
+
 ```
-const arr = [1, 2, 3];
 var totalAmount = arr.reduce((acc, n) => acc + n, 0)
 totalAmount; // 6
 ```
+
+`arr` itself keeps untouched.
 
 ### Objects
 An object in JavaScript is a collection of key: value pairs.
