@@ -12,12 +12,12 @@
       - [Array.filter()](#arrayfilter)
       - [Array.map()](#arraymap)
       - [Array.reduce()](#arrayreduce)
-    - [Objects](#objects)
-      - [Composing Objects](#composing-objects)
-  - [Comparisons](#comparisons)
+  - [Objects](#objects)
+    - [Composing Objects](#composing-objects)
+  - [Comparison](#comparison)
   - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
   - [Iterators](#iterators)
-  - [Switch -> avoid](#switch---avoid)
+  - [Switch](#switch)
   - [eval()](#eval)
   - [Functions](#functions)
     - [Default parameter values](#default-parameter-values)
@@ -27,8 +27,8 @@
     - [Recursion](#recursion)
     - [Rest and Spread](#rest-and-spread)
     - [Currying](#currying)
-    - [Function composition](#function-composition)
-      - [compose(), be careful](#compose-be-careful)
+    - [Function composition (needs check if examples really function composition)](#function-composition-needs-check-if-examples-really-function-composition)
+      - ['Piping' functions together](#piping-functions-together)
     - [Method Chaining](#method-chaining)
     - [Higher-Order-Functions](#higher-order-functions)
     - [Pure functions](#pure-functions)
@@ -40,7 +40,7 @@
     - [Inheritance](#inheritance)
     - [Concatenative Inheritance / Cloning / Mixins](#concatenative-inheritance--cloning--mixins)
     - [Functional Inheritance](#functional-inheritance)
-    - [!!! Composition !!!](#-composition-)
+    - [Composition](#composition)
       - [Composition with Stamps (stampit.js)](#composition-with-stamps-stampitjs)
 - [Examples of nice functional programming](#examples-of-nice-functional-programming)
   - [The greeting mess](#the-greeting-mess)
@@ -258,7 +258,8 @@ const double = function(x) {
 ```
 
 equals
-`const double = x => x * 2;`
+
+`const double = x => x * 2; //ES6 arrow function`
 
 IMPORTANT: `=>` lacks its own `this` and `arguments`. Also it can't be used as a constructor.
 
@@ -272,6 +273,7 @@ sum(1, 2, 3, 4) //=== 10
 ```
 
 With arrow function:
+
 `var sum = (...numbers) => numbers.reduce((a, b) => a + b)`
 
 ### Default parameter values
@@ -329,7 +331,7 @@ var lightbulbAPI = {
 };
 ```
 
-Create:
+Better:
 ```
 var lightbulbAPI = {
     off: function off() {},
@@ -382,42 +384,23 @@ shiftToLast(1, 2, 3); // [2, 3, 1]
 ### Currying
 Maybe to complicated to be used because of easily made errors! Avoid when possible.
 
-### Function composition
+### Function composition (needs check if examples really function composition)
 ```
 const inc = n => n + 1;
+const double = n => n * 2;
 inc(double(2)); // 5
 ```
-
-The value `2` is passed into `double()`, which produces `4`. `4` is passed into `inc()` which evaluates to `5`.
 
 You can pass any expression as an argument to a function. The expression will be evaluated before the function is applied:
 `inc(double(2) * double(2)); // 17`
 
-Since `double(2)` evaluates to `4`, you can read that as `inc(4 * 4)` which evaluates to `inc(16)` which then evaluates to `17`.
-
-#### compose(), be careful
-```
-const add1 = n => n + 1;
-const double = n => n * 2;
-const add1ThenDouble = compose(
-  double,
-  add1
-);
-add1ThenDouble(2); // 6
-// ((2 + 1 = 3) * 2 = 6)
-```
-
-So be aware, `compose()` evaluates right-to-left!! A solution to this is:
+#### 'Piping' functions together
 `const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);`
 
 Now you can write add1ThenDouble() like this:
 ```
-const add1ThenDouble = pipe(
-  add1,
-  double
-);
-add1ThenDouble(2); // 6
-// ((2 + 1 = 3) * 2 = 6)
+const add1ThenDouble = pipe(add1, double);
+add1ThenDouble(2); // ((2 + 1 = 3) * 2 = 6)
 ```
 
 ### Method Chaining
@@ -427,7 +410,7 @@ arr.map(double).map(double); // [4, 8, 12]
 ```
 
 ### Higher-Order-Functions
-How JavaScripts Array.filter() (a very very flexible base function!) is build:
+How JavaScripts `Array.filter()` is build:
 ```
 const reduce = (reducer, initial, arr) => {
    let acc = initial;
@@ -470,7 +453,7 @@ const setx = (v) => x = v
 Use whenever possible, because they are clean and have no side-effects to worry about.
 
 ## Monads, Functors, and Fancy Words
-Monads can be thought of as a container for a value, and to open up the container and do something to the value, you need to map over it. Array.filter() is a functor/monad!. Here’s a simple example:
+Monads can be thought of as a container for a value, and to open up the container and do something to the value, you need to map over it. `Array.filter()` is a functor/monad!. Here’s a simple example:
 
 ```
 const inc = n => n + 1;
@@ -492,20 +475,23 @@ See: https://medium.com/javascript-scene/functors-categories-61e031bac53f
 JavaScript has no classes! Even the ES6 `class` desugars to constructor functions! Use them only if unavoidable.
 
 See:
+
 https://medium.com/javascript-scene/javascript-factory-functions-vs-constructor-functions-vs-classes-2f22ceddf33e
+
 https://medium.com/javascript-scene/3-different-kinds-of-prototypal-inheritance-es6-edition-32d777fa16c9
 
 ### Factory function (use if possible!)
 ```
 const proto = {
-  hello () { return `Hello, my name is ${ this.name }`; }
+  hello: function hello() {
+     console.log(`Hello, my name is ${ this.name }`)
+  }
 };
 
 const greeter = (name) => Object.assign(Object.create(proto), {name});
 
-const george = greeter('george');
-const msg = george.hello();
-console.log(msg); // Hello, my name is George
+const george = greeter('George');
+george.hello(); // Hello, my name is George
 ```
 
 ### ES5 constructor function (don't use if possible)
@@ -514,13 +500,12 @@ function Greeter (name) {
   this.name = name || 'John Doe';
 }
 
-Greeter.prototype.hello = function hello () {
-  return 'Hello, my name is ' + this.name;
+Greeter.prototype.hello = function hello() {
+  console.log(`Hello, my name is ${ this.name }`)
 }
 
 var george = new Greeter('George');
-var msg = george.hello();
-console.log(msg); // Hello, my name is George
+george.hello(); // Hello, my name is George
 ```
 
 ### ES6 class (don't use if possible)
@@ -529,28 +514,30 @@ class Greeter {
   constructor (name) {
     this.name = name || 'John Doe';
   }
-  hello () { return `Hello, my name is ${ this.name }`; }
+  hello: function hello() {
+     console.log(`Hello, my name is ${ this.name }`)
+  }
 }
 
 const george = new Greeter('George');
-const msg = george.hello();
-console.log(msg); // Hello, my name is George
+george.hello(); // Hello, my name is George
 ```
 
 ### Inheritance
-However inheritance comes to life (factory functions, constructor functions or "classes"), don't think in terms of IS-A relationships, but in terms of HAS-A, USES-A or CAN-DO relationships (composition!).
+However inheritance comes to life (factory functions, constructor functions or "classes"), don't think in terms of IS-A relationships, but in terms of HAS-A, USES-A or CAN-DO relationships which leads you to composition instead of parent-child inheritance.
 
 ### Concatenative Inheritance / Cloning / Mixins
-Concatenative inheritance is the process of copying the properties from one object to another, without retaining a reference between the two objects.
+Concatenative inheritance is the process of copying the properties/functions from one object to another, without retaining a reference between the two objects.
 
 ```
 const proto = {
-  hello: function hello() { return `Hello, my name is ${ this.name }`; }
+  hello: function hello() {
+     console.log(`Hello, my name is ${ this.name }`)
+  }
 };
 
 const george = Object.assign({}, proto, {name: 'George'});
-const msg = george.hello();
-console.log(msg); // Hello, my name is George
+george.hello(); // Hello, my name is George
 ```
 
 ### Functional Inheritance
@@ -586,7 +573,7 @@ model.on('change', data => console.log(data));
 model.set('name', 'Sam');
 ```
 
-### !!! Composition !!!
+### Composition
 ```
 const barker = (state) => ({
    bark: () => console.log('Woof, I'am ' + state.name');
