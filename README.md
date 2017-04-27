@@ -35,6 +35,8 @@
     - [Inheritance](#inheritance)
     - [Concatenative Inheritance / Cloning / Mixins](#concatenative-inheritance--cloning--mixins)
     - [Functional Inheritance](#functional-inheritance)
+    - [!!! Composition !!!](#-composition-)
+      - [Composition with Stamps (stampit.js)](#composition-with-stamps-stampitjs)
 - [Examples of nice functional programming](#examples-of-nice-functional-programming)
   - [The greeting mess](#the-greeting-mess)
 
@@ -437,7 +439,7 @@ console.log(msg); // Hello, my name is George
 ```
 
 ### Inheritance
-However inheritance comes to life (factory functions, constructor functions or "classes"), don't think in terms of IS-A relationships, but in terms of HAS-A or CAN-DO relationships (composition!).
+However inheritance comes to life (factory functions, constructor functions or "classes"), don't think in terms of IS-A relationships, but in terms of HAS-A, USES-A or CAN-DO relationships (composition!).
 
 ### Concatenative Inheritance / Cloning / Mixins
 Concatenative inheritance is the process of copying the properties from one object to another, without retaining a reference between the two objects.
@@ -484,6 +486,130 @@ model.on('change', data => console.log(data));
 
 model.set('name', 'Sam');
 ```
+
+### !!! Composition !!!
+```
+const barker = (state) => ({
+   bark: () => console.log('Woof, I'am ' + state.name');
+})
+const driver = (state) => ({
+   drive: () => state.position = state.position + state.speed;
+})
+const killer = (state) => ({
+   kill: () => console.log('Astalavista, baby!');
+})
+
+const murderRobotDog = (name) => {
+   let state = {
+      name,
+      speed: 100,
+      position: 0
+   }
+   return Object.assign(
+      {},
+      barker(state),
+      driver(state),
+      killer(state)
+   )
+}
+
+murderRobotDog('sniffles').bark(); // Woof, I'm sniffles
+```
+
+#### Composition with Stamps (stampit.js)
+```
+const a = init(function () {
+  const a = 'a';
+
+  Object.assign(this, {
+    getA () { return a; }
+  });
+});
+
+const b = init(function () {
+  const a = 'b';
+
+  Object.assign(this, {
+    getB () { return a; }
+  });
+});
+
+const c = compose(a, b); // Stampit functionality
+
+const foo = c();
+console.log(foo.getA()); // 'a'
+console.log(foo.getB()); // 'b'
+```
+
+```
+// Some more privileged methods, with some private data.
+const availability = init(function () {
+  let isOpen = false; // private
+
+  Object.assign(this, {
+    open () {
+      isOpen = true;
+      return this;
+    },
+    close () {
+      isOpen = false;
+      return this;
+    },
+    isOpen () {
+      return isOpen;
+    }
+  });
+});
+
+// Here's a stamp with public methods, and some state:
+const membership = compose({
+  methods: {
+    add (member) {
+      this.members[member.name] = member;
+      return this;
+    },
+    getMember (name) {
+      return this.members[name];
+    }
+  },
+  properties: {
+    members: {}
+  }
+});
+
+// Let's set some defaults:
+const defaults = compose({
+  properties: {
+    name: 'The Saloon',
+    specials: 'Whisky, Gin, Tequila'
+  }
+});
+
+const overrides = init(function (overrides) {
+  Object.assign(this, overrides);
+});
+
+// Classical inheritance has nothing on this. No parent/child coupling.
+// No deep inheritance hierarchies.
+// Just good, clean code reusability.
+const bar = compose(availability, membership, defaults, overrides);
+const myBar = bar({name: 'Moe\'s'});
+
+// Silly, but proves that everything is as it should be.
+const result = myBar.add({name: 'Homer'}).open().getMember('Homer');
+console.log(result); // { name: 'Homer' }
+console.log(`
+  name: ${ myBar.name }
+  isOpen: ${ myBar.isOpen() }
+  specials: ${ myBar.specials }
+`);
+/*
+  name: Moe's
+  isOpen: true
+  specials: Whisky, Gin, Tequila
+*/
+```
+
 
 # Examples of nice functional programming
 
