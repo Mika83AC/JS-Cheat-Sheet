@@ -28,8 +28,13 @@
     - [Higher-Order-Functions](#higher-order-functions)
     - [Pure functions](#pure-functions)
   - [Monads, Functors, and Fancy Words](#monads-functors-and-fancy-words)
-  - ["Classes" and it's better implementation, "Factories"](#classes-and-its-better-implementation-factories)
+  - ["Classes", Factories, inheritance and it's best practices](#classes-factories-inheritance-and-its-best-practices)
+    - [Factory function (use if possible!)](#factory-function-use-if-possible)
+    - [ES5 constructor function (don't use if possible)](#es5-constructor-function-dont-use-if-possible)
+    - [ES6 class (don't use if possible)](#es6-class-dont-use-if-possible)
     - [Inheritance](#inheritance)
+    - [Concatenative Inheritance / Cloning / Mixins](#concatenative-inheritance--cloning--mixins)
+    - [Functional Inheritance](#functional-inheritance)
 - [Examples of nice functional programming](#examples-of-nice-functional-programming)
   - [The greeting mess](#the-greeting-mess)
 
@@ -352,9 +357,11 @@ Pure functions depend only on the inputs of the function, and the output should 
 ```
 // pure function
 const add10 = (a) => a + 10
+
 // impure function due to external non-constants
 let x = 10
 const addx = (a) => a + x
+
 // also impure due to side-effect
 const setx = (v) => x = v
 ```
@@ -380,18 +387,103 @@ list.map(compose(isZero, inc)) // => [true, false, false]
 
 See: https://medium.com/javascript-scene/functors-categories-61e031bac53f
 
-## "Classes" and it's better implementation, "Factories"
+## "Classes", Factories, inheritance and it's best practices
 JavaScript has no classes! Even the ES6 `class` desugars to constructor functions! Use them only if unavoidable.
 
 See:
-
 https://medium.com/javascript-scene/javascript-factory-functions-vs-constructor-functions-vs-classes-2f22ceddf33e
-
 https://medium.com/javascript-scene/3-different-kinds-of-prototypal-inheritance-es6-edition-32d777fa16c9
+
+### Factory function (use if possible!)
+```
+const proto = {
+  hello () { return `Hello, my name is ${ this.name }`; }
+};
+
+const greeter = (name) => Object.assign(Object.create(proto), {name});
+
+const george = greeter('george');
+const msg = george.hello();
+console.log(msg); // Hello, my name is George
+```
+
+### ES5 constructor function (don't use if possible)
+```
+function Greeter (name) {
+  this.name = name || 'John Doe';
+}
+
+Greeter.prototype.hello = function hello () {
+  return 'Hello, my name is ' + this.name;
+}
+
+var george = new Greeter('George');
+var msg = george.hello();
+console.log(msg); // Hello, my name is George
+```
+
+### ES6 class (don't use if possible)
+```
+class Greeter {
+  constructor (name) {
+    this.name = name || 'John Doe';
+  }
+  hello () { return `Hello, my name is ${ this.name }`; }
+}
+
+const george = new Greeter('George');
+const msg = george.hello();
+console.log(msg); // Hello, my name is George
+```
 
 ### Inheritance
 However inheritance comes to life (factory functions, constructor functions or "classes"), don't think in terms of IS-A relationships, but in terms of HAS-A or CAN-DO relationships (composition!).
 
+### Concatenative Inheritance / Cloning / Mixins
+Concatenative inheritance is the process of copying the properties from one object to another, without retaining a reference between the two objects.
+
+```
+const proto = {
+  hello: function hello() { return `Hello, my name is ${ this.name }`; }
+};
+
+const george = Object.assign({}, proto, {name: 'George'});
+const msg = george.hello();
+console.log(msg); // Hello, my name is George
+```
+
+### Functional Inheritance
+The primary advantage of using functions for extension is that it allows you to use the function closure to encapsulate private data. In other words, you can enforce private state.
+
+```
+const rawMixin = function () {
+  const attrs = {}; // -> get's private!!
+
+  return Object.assign(this, {
+    set (name, value) {
+      attrs[name] = value;
+
+      this.emit('change', {
+        prop: name,
+        value: value
+      });
+    },
+
+    get (name) {
+      return attrs[name];
+    }
+  }, WhateverElseToApply);
+};
+
+const mixinModel = (target) => rawMixin.call(target);
+
+const george = { name: 'george' };
+const model = mixinModel(george);
+
+model.on('change', data => console.log(data));
+
+model.set('name', 'Sam');
+```
 
 # Examples of nice functional programming
 
