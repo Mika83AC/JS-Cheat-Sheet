@@ -5,6 +5,7 @@
 - [JS-Cheat-Sheet](#js-cheat-sheet)
   - [Variable declarations](#variable-declarations)
     - [var, let & const](#var-let--const)
+    - [Declare all variables of a function on top of it](#declare-all-variables-of-a-function-on-top-of-it)
       - [Shorthands with ES6 destructuring](#shorthands-with-es6-destructuring)
   - [Types](#types)
     - [Arrays](#arrays)
@@ -15,6 +16,9 @@
       - [Composing Objects](#composing-objects)
   - [Comparisons](#comparisons)
   - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
+  - [Iterators](#iterators)
+  - [Switch -> avoid](#switch---avoid)
+  - [eval()](#eval)
   - [Functions](#functions)
     - [Default parameter values](#default-parameter-values)
     - [Parameter destructuring with ES6](#parameter-destructuring-with-es6)
@@ -198,6 +202,71 @@ count.forEach(function (number) {
 });
 return text;
 ```
+
+And perhaps even better:
+```
+var getCount = function getCount() {
+  var count = [1, 2, 3];
+
+  return count.reduce(function (previous, number) {
+    return previous + number + ' ';
+  }, '');
+};
+```
+
+## Switch -> avoid
+Simple to miss the `break;`` statement which leads to difficult to find bugs.
+
+```
+function doAction(action) {
+  switch (action) {
+    case 'hack':
+      return 'hack';
+    break;
+
+    case 'slash':
+      return 'slash';
+    break;
+
+    case 'run':
+      return 'run';
+    break;
+
+    default:
+      throw new Error('Invalid action.');
+    break;
+  }
+}
+```
+
+Exchange with:
+```
+function doAction(action) {
+  var actions = {
+    'hack': function () {
+      return 'hack';
+    },
+
+    'slash': function () {
+      return 'slash';
+    },
+
+    'run': function () {
+      return 'run';
+    }
+  };
+
+  if (typeof actions[action] !== 'function') {
+    throw new Error('Invalid action.');
+  }
+
+
+  return actions[action]();
+}
+```
+
+## eval()
+Simply don't use because it can be a security problem.
 
 ## Functions
 ```
