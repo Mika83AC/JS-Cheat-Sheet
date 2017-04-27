@@ -57,6 +57,8 @@ Hopefully best practices in modern JavaScript (ES6 and beyond).
 Once variables with `const` or `let` are declared, any attemp to declare them again will fail.
 
 ### Declare all variables of a function on top of it
+Because of "Hoisting" problems.
+
 Wrong: multiple var statements:
 ```
 (function myScript() {
@@ -96,7 +98,6 @@ payload; // content of action.payload
 An ordered list of values.
 
 `[1, 2, 3];` -> The literal notation.
-
 `const arr = [1, 2, 3];` -> With a given name.
 
 #### Array.filter()
@@ -114,7 +115,6 @@ const double = x => x * 2;
 In this case, `arr` is the object, `.map()` is a property of the object with a function for a value. When you invoke it, the function gets applied to the arguments, as well as a special parameter called `this`, which gets automatically set when the method is invoked. The `this` value is how `.map()` gets access to the contents of the array.
 
 Note that the original arr value is unchanged:
-
 `arr; // [1, 2, 3]`
 
 #### Array.reduce()
@@ -127,7 +127,6 @@ totalAmount; // 6
 ```
 
 equals
-
 ```
 const arr = [1, 2, 3];
 const summingReducer = (acc, n) => acc + n;
@@ -136,7 +135,6 @@ totalAmount; // 6
 ```
 
 equals
-
 ```
 const arr = [1, 2, 3];
 var totalAmount = arr.reduce((acc, n) => acc + n, 0)
@@ -147,7 +145,6 @@ totalAmount; // 6
 An object in JavaScript is a collection of key: value pairs.
 
 `{ key: 'value' }` -> The literal notation.
-
 `const foo = { bar: 'bar' }` -> With a given name.
 
 #### Composing Objects
@@ -163,14 +160,12 @@ Note that when you use `Object.assign()`, you must pass a destination object as 
 
 ## Comparisons
 Use the `===` comparison whenever possible. It has strict type cheching:
-
 ```
 3 + 1 === 4; // true
 3 + 1 === '4'; // false
 ```
 
 Using just `==` has no type checking:
-
 ```
 3 + 1 == 4; // true
 3 + 1 == '4'; // true
@@ -178,6 +173,31 @@ Using just `==` has no type checking:
 
 ## Ternaries (IF shorthand)
 `14 - 7 === 7 ? 'Yep!' : 'Nope.'; // Yep!`
+
+## Iterators
+OK:
+```
+var i,
+count = [1, 2, 3],
+length = count.length,
+text = '';
+
+for (i = 0; i < length; i += 1) {
+   text += count[i] + ' ';
+}
+return text;
+```
+
+Better:
+```
+var count = [1, 2, 3],
+text = '';
+
+count.forEach(function (number) {
+   text += number + ' ';
+});
+return text;
+```
 
 ## Functions
 ```
@@ -187,13 +207,11 @@ const double = function(x) {
 ```
 
 equals
-
 `const double = x => x * 2;`
 
 IMPORTANT: `=>` lacks its own `this` and `arguments`. Also it can't be used as a constructor.
 
 Old way with `arguments`:
-
 ```
 var sum = function(){
 	var args = [].slice.call(arguments)
@@ -203,7 +221,6 @@ sum(1, 2, 3, 4) //=== 10
 ```
 
 With arrow function:
-
 `var sum = (...numbers) => numbers.reduce((a, b) => a + b)`
 
 ### Default parameter values
@@ -285,14 +302,12 @@ console.log(
 
 ### Rest and Spread
 For example, the following function simply discards the first argument and returns the rest as an array:
-
 ```
 const aTail = (head, ...tail) => tail;
 aTail(1, 2, 3); // [2, 3]
 ```
 
 Spread does the opposite: it spreads the elements from an array to individual elements. Consider this:
-
 ```
 const shiftToLast = (head, ...tail) => [...tail, head];
 shiftToLast(1, 2, 3); // [2, 3, 1]
@@ -310,7 +325,6 @@ inc(double(2)); // 5
 The value `2` is passed into `double()`, which produces `4`. `4` is passed into `inc()` which evaluates to `5`.
 
 You can pass any expression as an argument to a function. The expression will be evaluated before the function is applied:
-
 `inc(double(2) * double(2)); // 17`
 
 Since `double(2)` evaluates to `4`, you can read that as `inc(4 * 4)` which evaluates to `inc(16)` which then evaluates to `17`.
@@ -328,11 +342,9 @@ add1ThenDouble(2); // 6
 ```
 
 So be aware, `compose()` evaluates right-to-left!! A solution to this is:
-
 `const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);`
 
 Now you can write add1ThenDouble() like this:
-
 ```
 const add1ThenDouble = pipe(
   add1,
@@ -350,7 +362,6 @@ arr.map(double).map(double); // [4, 8, 12]
 
 ### Higher-Order-Functions
 How JavaScripts Array.filter() (a very very flexible base function!) is build:
-
 ```
 const reduce = (reducer, initial, arr) => {
    let acc = initial;
@@ -638,11 +649,9 @@ console.log(`
 ## The greeting mess
 
 We need to greet a user on login. Easy:
-
 `const greeting = (name) => `Hello ${name}`
 
 But wait ... we need more greeting text:
-
 ```
 const greeting = (name, male=false, female=false) =>
   `Hello ${male ? ‘Mr. ‘ : female ? ‘Ms. ‘ : ‘’} ${name}`
@@ -665,7 +674,6 @@ formalGreeting(male(phd("Chet"))); // => "Hello Mr. Chet PhD"
 ```
 
 This is a nice approach, but a litte unhandy in use. So lets do this:
-
 ```
 const pipe = (fns) => (x) => fns.reduce((v, f) => f(v), x); // a helper for 'chaining' functions
 
