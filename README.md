@@ -4,14 +4,12 @@
 
 - [JS-Cheat-Sheet](#js-cheat-sheet)
   - [Variable declarations](#variable-declarations)
-    - [var, let & const](#var-let--const)
-    - [Declare all variables of a function on top of it](#declare-all-variables-of-a-function-on-top-of-it)
+      - [var, let & const](#var-let--const)
+      - [Declare all variables of a function on top of it](#declare-all-variables-of-a-function-on-top-of-it)
       - [Shorthands with ES6 destructuring](#shorthands-with-es6-destructuring)
   - [Types](#types)
-    - [Arrays](#arrays)
-      - [Array.filter()](#arrayfilter)
-      - [Array.map()](#arraymap)
-      - [Array.reduce()](#arrayreduce)
+      - [Arrays](#arrays)
+        - [filter() | map() | reduce()](#filter--map--reduce)
   - [Objects](#objects)
     - [Prototypes](#prototypes)
       - [Delegate Prototypes](#delegate-prototypes)
@@ -60,7 +58,7 @@
 Hopefully best practices in modern JavaScript (ES6 and beyond).
 
 ## Variable declarations
-### var, let & const
+#### var, let & const
 `const` is the most strict declaration and can't be reassigned. It should be used as default whereever possible.
 
 `let` is the second strict declaration and can be reassigned. It should be used for iteration counter.
@@ -70,7 +68,7 @@ Hopefully best practices in modern JavaScript (ES6 and beyond).
 
 Once variables with `const` or `let` are declared, any attemp to declare them again will fail.
 
-### Declare all variables of a function on top of it
+#### Declare all variables of a function on top of it
 Because of "Hoisting" problems.
 
 #### Shorthands with ES6 destructuring
@@ -87,61 +85,21 @@ payload; // content of action.payload
 ```
 
 ## Types
-### Arrays
+#### Arrays
 An ordered list of values.
 
-`[1, 2, 3];` -> The literal notation.
+`const arr = [2, 4, 6];`
 
-`const arr = [1, 2, 3];` -> With a given name.
-
-#### Array.filter()
+##### filter() | map() | reduce()
 ```
-const arr = [2, 4, 6];
-const greater2 = x => x > 2;
-arr.filter(greater2); // [4, 6]
-```
+arr.filter(x => x > 2); // [4, 6]
 
-equals
+arr.map(x => x * 2); // [4, 8, 12]
 
-`arr.filter(x => x > 2); // [4, 6]`
-
-`arr` itself keeps untouched.
-
-#### Array.map()
-```
-const arr = [1, 2, 3];
-const double = x => x * 2;
-arr.map(double); // [2, 4, 6]
+arr.reduce((acc, n) => acc + n, 0); // 10
 ```
 
-`arr` itself keeps untouched.
-
-#### Array.reduce()
-```
-const arr = [1, 2, 3];
-var totalAmount = arr.reduce(function(sum, item) {
-   return sum + item
-}, 0)
-totalAmount; // 6
-```
-
-equals
-
-```
-const summingReducer = (acc, n) => acc + n;
-var totalAmount = arr.reduce(summingReducer, 0)
-totalAmount; // 6
-```
-
-equals
-
-```
-var totalAmount = arr.reduce((acc, n) => acc + n, 0)
-totalAmount; // 6
-```
-
-`arr` itself keeps untouched.
-
+`arr` itself always stays untouched!
 
 ## Objects
 In JavaScript, all types of functions, arrays, key/value pairs, and data structures in general are really objects. Even primitive types get the object treatment when you refer to them with the property access notations.
