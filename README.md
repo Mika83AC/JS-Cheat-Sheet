@@ -110,25 +110,26 @@ A prototype is an object intended to model other objects after. It is similar to
 #### Delegate Prototypes
 ```
 var colorProto = {
-   setColor: function setColor(newColor) {
-      this.color = newColor;
+   setColorName: function setColor(setColorName) {
+      this.colorName = newColor;
       return this;
    },
 
-   color: 'white'
+   colorName: 'white'
+   rgb: {
+      r: 255, g: 255, b: 255
+   }
 },
 white = Object.create(colorProto),
-red = Object.create(colorProto).setColor('red');
+red = Object.create(colorProto).setColorName('red');
 
-white.color; //white
-red.color; //red
+white.colorName; //white
+red.colorName; //red
+
+red.rgb.r = 0; // also sets white.rgb.r to 0 -> Object and array mutations are shared!
+
+red.rgb = {r: 255, g: 0, b: 0}; // only sets red.rgb to 255,0,0 -> Property replacement is instance-specific!
 ```
-
-Notice that `color` is on the prototype, but changing `color` on `red` did not change color on `white`. Properties on the prototype act like defaults. When you set them on the instance, the instance value overrides the value for that instance, only.
-
-_It's important to note though that if you mutate an object or array property on the prototype, that mutation will be shared on the prototype. If you replace the whole property, the change is reflected only on that instance!_
-
-_Sharing state (nonmethod data) on a prototype property is commonly considered an anti-pattern in the JavaScript community, because accidental mutations of shared properties are a common source of bugs when you do it._
 
 #### Prototype Cloning
 Sometimes you don't want to share data on a prototype property. Instead, you want each instance to have its own unique copy of the prototype's properties.
