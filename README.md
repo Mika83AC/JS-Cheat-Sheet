@@ -15,6 +15,9 @@
   - [Objects](#objects)
     - [Prototypes](#prototypes)
       - [Delegate Prototypes](#delegate-prototypes)
+      - [Prototype Cloning](#prototype-cloning)
+      - [The Flyweight Pattern](#the-flyweight-pattern)
+      - [Factories](#factories)
     - [Composing Objects](#composing-objects)
   - [Comparison](#comparison)
   - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
@@ -69,27 +72,6 @@ Once variables with `const` or `let` are declared, any attemp to declare them ag
 
 ### Declare all variables of a function on top of it
 Because of "Hoisting" problems.
-
-Wrong: multiple var statements:
-```
-(function myScript() {
-  var x = true;
-  var y = true;
-  /* do some stuff with x and y */
-  var z = true;
-  /* do some stuff with z */
-}());
-```
-
-Right: one var per function:
-```
-(function myScript() {
-  var x = true,
-  y = true,
-  z = true;
-  /* do some stuff with x, y, and z */
-}());
-```
 
 #### Shorthands with ES6 destructuring
 ```
@@ -181,7 +163,6 @@ var switchProto = {
    isOn: function isOn() {
       return this.state;
    },
-
    toggle: function toggle() {
       this.state = !this.state;
       return this;
@@ -202,7 +183,6 @@ var switchProto = {
    isOn: function isOn() {
       return this.state;
    },
-
    toggle: function toggle() {
       this.state = !this.state;
       return this;
@@ -214,7 +194,7 @@ var switchProto = {
 
    state: false
 },
-switch1 = Object.create(switchProto),
+switch1 = Object.create(switchProto):
 switch2 = Object.create(switchProto);
 
 test('Prototype mutations.', function () {
@@ -229,6 +209,101 @@ test('Prototype mutations.', function () {
    equal(switch1.meta.name, 'Breaker switch',
       'Property replacement is instance-specific.'
    );
+});
+```
+
+**Sharing state (nonmethod data) on a prototype property is commonly considered an anti-pattern in the JavaScript community, because accidental mutations of shared properties are a common source of bugs when you do it.**
+
+#### Prototype Cloning
+Sometimes you don't want to share data on a prototype property. Instead, you want each instance to have its own unique copy of the prototype's properties.
+
+Instead:
+`switch1 = Object.create(switchProto);`
+
+use:
+`switch1 = Object.assign({}, switchProto);`
+
+The primary difference between cloning and delegation is that cloning will copy the value of each property for every object instance, whereas delegation is more memory efficient. It stores only one copy of each default property setting until you need to override properties at the instance level.
+
+As it turns out, it's often a good idea to employ a mix of both techniques—using the delegate prototype to share public methods between objects and cloning for data that can't be safely shared between instances.
+
+#### The Flyweight Pattern
+The flyweight pattern conserves system resources by storing all reusable properties and methods on a delegate object, as opposed to storing copies of them on every instance. This can save a lot of memory and improve system performance dramatically if there are many objects of the same type.
+
+Imagine you're programming a video game and there is a common enemy that has dozens or hundreds of copies in the game world. Each copy stores the enemy's base stats, such as strength and speed, along with methods for all of its attacks and defenses. It also stores the enemy's position in the game world and current health. You can optimize these objects in JavaScript by storing all of that data on the enemy prototype. When there is a change to the enemy's health or position, those changes are made to the enemy instance, while all the other data and methods are delegated to the prototype:
+
+```var enemyPrototype = {
+    name: 'Wolf',
+    position: { // Override this with setPosition
+      x: 0,
+      y: 0
+    },
+    setPosition: function setPosition (x, y) {
+      this.position = {
+        x: x,
+        y: y
+      };
+      return this;
+    },
+    health: 20, // Overrides automatically on change
+    bite: function bite() {
+    },
+    evade: function evade() {
+    }
+  },
+
+  spawnEnemy = function () {
+    return Object.create(enemyPrototype);
+  };
+
+test('Flyweight pattern.', function () {
+  var wolf1 = spawnEnemy(),
+    wolf2 = spawnEnemy();
+
+  wolf1.health = 5;
+  ok(wolf2.health = 20,
+    'Primitives override automatically.');
+
+  ok(wolf1.setPosition(10, 10)
+      .position.x === 10, 'Object override works.');
+  equal(wolf2.position.x, 0,
+      'The prototype should remain unchanged.');
+});
+```
+
+**Just be mindful that you'll need to replace member objects and arrays rather than mutate them in place if you want your changes to be instance safe.**
+
+#### Factories
+```
+var carPrototype = {
+    gas: function gas(amount) {
+      amount = amount || 10;
+      this.mph += amount;
+      return this;
+    },
+    brake: function brake(amount) {
+      amount = amount || 10;
+      this.mph = ((this.mph - amount) < 0)? 0
+        : this.mph - amount;
+      return this;
+    },
+    color: 'pink',
+    direction: 0,
+    mph: 0
+  },
+
+  car = function car(options) {
+    return extend(Object.create(carPrototype), options);
+  },
+
+  myCar = car({
+    color: 'red'
+  });
+
+test('Flyweight factory with cloning', function () {
+  ok(Object.getPrototypeOf(myCar).gas,
+    'Prototype methods are shared.'
+  );
 });
 ```
 
