@@ -12,6 +12,8 @@
   - [Iterators](#iterators)
   - [Arrays](#arrays)
     - [filter() | map() | reduce()](#filter--map--reduce)
+  - [Switch](#switch)
+  - [eval()](#eval)
   - [Objects](#objects)
     - [Prototypes](#prototypes)
       - [Delegate Prototypes](#delegate-prototypes)
@@ -21,12 +23,12 @@
       - [Factories](#factories)
       - [Prototypal Inheritance with Stamps](#prototypal-inheritance-with-stamps)
     - [Composing objects](#composing-objects)
-  - [Switch](#switch)
-  - [eval()](#eval)
   - [Functions](#functions)
-    - [Default parameter values](#default-parameter-values)
+    - [ES6 arrow functions](#es6-arrow-functions)
+    - [Parameter detault values](#parameter-detault-values)
     - [Parameter destructuring with ES6](#parameter-destructuring-with-es6)
     - [Named parameters](#named-parameters)
+    - [Parameters of unknown length](#parameters-of-unknown-length)
     - [Named Function Expressions](#named-function-expressions)
     - [Pure functions / Stateless functions](#pure-functions--stateless-functions)
     - [Recursion](#recursion)
@@ -120,6 +122,32 @@ arr.reduce((acc, n) => acc + n, 0); // 10
 // arr itself gets never mutated, always a new array is returned
 ```
 
+## Switch
+Simple to miss the `break;` statement which leads to difficult to find bugs.
+
+So better exchange `switch`es with:
+```
+function doAction(action) {
+  var actions = {
+    'hack': function () {
+      return 'hack';
+    },
+    'slash': function () {
+      return 'slash';
+    },
+  };
+
+  if (typeof actions[action] !== 'function') {
+    throw new Error('Invalid action.');
+  }
+
+  return actions[action]();
+}
+```
+
+## eval()
+Simply don't use because it can be a security problem.
+
 ## Objects
 In JavaScript, all types of functions, arrays, key/value pairs, and data structures in general are really objects.
 
@@ -201,65 +229,18 @@ const c = Object.assign({}, oA, oB); // c becomes { a: 'a', b: 'b' }
 
 Note that when you use `Object.assign()`, you must pass a destination object as the first parameter. It is the object that properties will be copied to. If you forget, and omit the destination object, the object you pass in the first argument will be mutated.
 
-## Switch
-Simple to miss the `break;` statement which leads to difficult to find bugs.
-
-So better exchange `switch`es with:
-```
-function doAction(action) {
-  var actions = {
-    'hack': function () {
-      return 'hack';
-    },
-
-    'slash': function () {
-      return 'slash';
-    },
-
-    'run': function () {
-      return 'run';
-    }
-  };
-
-  if (typeof actions[action] !== 'function') {
-    throw new Error('Invalid action.');
-  }
-
-
-  return actions[action]();
-}
-```
-
-## eval()
-Simply don't use because it can be a security problem.
-
 ## Functions
+### ES6 arrow functions
 ```
-const double = function(x) {
-   return x * 2;
-}
+const double = x => x * 2; //ES6 arrow function
+const double = x => { return x * 2; } //ES6 arrow function
+
+const double = function(x) { return x * 2; } // Old way
 ```
-
-equals
-
-`const double = x => x * 2; //ES6 arrow function`
 
 IMPORTANT: `=>` lacks its own `this` and `arguments`. Also it can't be used as a constructor.
 
-Old way with `arguments`:
-```
-var sum = function(){
-	var args = [].slice.call(arguments)
-	  .reduce(function(a, b){ return a + b })
-}
-sum(1, 2, 3, 4) //=== 10
-```
-
-With arrow function:
-
-`var sum = (...numbers) => numbers.reduce((a, b) => a + b)`
-
-### Default parameter values
+### Parameter detault values
 ```
 const orZero = (n = 0) => n;
 orZero(); // 0
@@ -305,17 +286,28 @@ var newUser = createUser({
 newUser;
 ```
 
+### Parameters of unknown length
+```
+var sum = (...numbers) => numbers.reduce((a, b) => a + b)
+sum(1, 2, 3, 4) // 10
+
+var sumOldWay = function(){
+	var args = [].slice.call(arguments)
+	  .reduce(function(a, b){ return a + b })
+}
+sumOldWay(1, 2, 3, 4) // 10
+```
+
 ### Named Function Expressions
 For better debugging, don't create anonymous functions at top-levels as this will be hard to stacktrace:
 ```
+// don't
 var lightbulbAPI = {
     off: function() {},
     on: function() {},
 };
-```
 
-Better:
-```
+// do
 var lightbulbAPI = {
     off: function off() {},
     on: function on() {},
