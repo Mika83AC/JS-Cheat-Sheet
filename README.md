@@ -13,6 +13,8 @@
       - [Array.map()](#arraymap)
       - [Array.reduce()](#arrayreduce)
   - [Objects](#objects)
+    - [Prototypes](#prototypes)
+      - [Delegate Prototypes](#delegate-prototypes)
     - [Composing Objects](#composing-objects)
   - [Comparison](#comparison)
   - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
@@ -160,11 +162,75 @@ totalAmount; // 6
 
 
 ## Objects
-An object in JavaScript is a collection of "key: value" pairs.
+In JavaScript, all types of functions, arrays, key/value pairs, and data structures in general are really objects. Even primitive types get the object treatment when you refer to them with the property access notations.
 
-`{ key: 'value' }` -> The literal notation.
+```
+var user = {
+    name: 'McLeod',
+    email: 'mclead@highlander.com'
+  };
+user.email.split('@')[1]; // => highlander.com
+```
 
-`const foo = { bar: 'bar' }` -> With a given name.
+### Prototypes
+A prototype is an object intended to model other objects after.
+
+#### Delegate Prototypes
+```
+var switchProto = {
+   isOn: function isOn() {
+      return this.state;
+   },
+
+   toggle: function toggle() {
+      this.state = !this.state;
+      return this;
+   },
+
+   state: false
+},
+switch1 = Object.create(switchProto),
+switch2 = Object.create(switchProto);
+```
+
+Notice that state is on the prototype, but changing state on switch1 did not change state on switch2. Properties on the prototype act like defaults. When you set them on the instance, the instance value overrides the value for that instance, only.
+
+**It's important to note though that if you mutate an object or array property on the prototype, that mutation will be shared on the prototype. If you replace the whole property, the change is reflected only on that instance:**
+
+```
+var switchProto = {
+   isOn: function isOn() {
+      return this.state;
+   },
+
+   toggle: function toggle() {
+      this.state = !this.state;
+      return this;
+   },
+
+   meta: {
+      name: 'Light switch'
+   },
+
+   state: false
+},
+switch1 = Object.create(switchProto),
+switch2 = Object.create(switchProto);
+
+test('Prototype mutations.', function () {
+   switch2.meta.name = 'Breaker switch';
+
+   equal(switch1.meta.name, 'Breaker switch',
+      'Object and array mutations are shared.'
+   );
+
+   switch2.meta = { name: 'Power switch' };
+
+   equal(switch1.meta.name, 'Breaker switch',
+      'Property replacement is instance-specific.'
+   );
+});
+```
 
 ### Composing Objects
 Objects can be easily composed together into new objects with `Object.assign()`.
