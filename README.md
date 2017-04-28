@@ -108,14 +108,16 @@ In JavaScript, all types of functions, arrays, key/value pairs, and data structu
 A prototype is an object intended to model other objects after. It is similar to a class in that you can use it to construct any number of object instances, but different in the sense that it is an object itself. There are two ways that prototypes can be used: you can delegate access to a single, shared prototype object (called a delegate), or you can make clones of the prototype.
 
 #### Delegate Prototypes
+In JavaScript, objects have an internal reference to a delegate prototype. When an object is queried for a property or method, the JavaScript engine first checks the object. If the key doesn't exist on that object, it checks the delegate prototype, and so on up the prototype chain. The prototype chain typically ends at the Object prototype.
+
 ```
 var colorProto = {
-   setColorName: function setColor(setColorName) {
+   setColorName: function setColorName(newColor) {
       this.colorName = newColor;
       return this;
    },
 
-   colorName: 'white'
+   colorName: 'white',
    rgb: {
       r: 255, g: 255, b: 255
    }
@@ -132,17 +134,7 @@ red.rgb = {r: 255, g: 0, b: 0}; // only sets red.rgb to 255,0,0 -> Property repl
 ```
 
 #### Prototype Cloning
-Sometimes you don't want to share data on a prototype property. Instead, you want each instance to have its own unique copy of the prototype's properties.
-
-Instead:
-`switch1 = Object.create(switchProto);`
-
-use:
-`switch1 = Object.assign({}, switchProto);`
-
-The primary difference between cloning and delegation is that cloning will copy the value of each property for every object instance, whereas delegation is more memory efficient. It stores only one copy of each default property setting until you need to override properties at the instance level.
-
-As it turns out, it's often a good idea to employ a mix of both techniques—using the delegate prototype to share public methods between objects and cloning for data that can't be safely shared between instances.
+See http://chimera.labs.oreilly.com/books/1234000000262/ch03.html#prototype_cloning, but here seems to be a mistake in the example. I don't get it.
 
 #### The Flyweight Pattern
 The flyweight pattern conserves system resources by storing all reusable properties and methods on a delegate object, as opposed to storing copies of them on every instance. This can save a lot of memory and improve system performance dramatically if there are many objects of the same type.
