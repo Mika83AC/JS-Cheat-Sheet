@@ -263,6 +263,7 @@ antilope.walk();
 var tiger = AnimalFactory({name: 'Tiger'});
 tiger.walk();
 tiger.kill(antilope);
+tiger.rest();
 ```
 
 #### Prototypal Inheritance with Stamps
