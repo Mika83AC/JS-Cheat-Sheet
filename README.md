@@ -24,14 +24,15 @@
     - [Parameter destructuring with ES6](#parameter-destructuring-with-es6)
     - [Named parameters](#named-parameters)
     - [Named Function Expressions](#named-function-expressions)
+    - [Pure functions / Stateless functions](#pure-functions--stateless-functions)
     - [Recursion](#recursion)
     - [Rest and Spread](#rest-and-spread)
     - [Currying](#currying)
+    - [Partial Application](#partial-application)
     - [Function composition (needs check if examples really function composition)](#function-composition-needs-check-if-examples-really-function-composition)
       - ['Piping' functions together](#piping-functions-together)
     - [Method Chaining](#method-chaining)
     - [Higher-Order-Functions](#higher-order-functions)
-    - [Pure functions](#pure-functions)
   - [Monads, Functors, and Fancy Words](#monads-functors-and-fancy-words)
   - ["Classes", Factories, inheritance and it's best practices](#classes-factories-inheritance-and-its-best-practices)
     - [Factory function (use if possible!)](#factory-function-use-if-possible)
@@ -42,6 +43,9 @@
     - [Functional Inheritance](#functional-inheritance)
     - [Composition](#composition)
       - [Composition with Stamps (stampit.js)](#composition-with-stamps-stampitjs)
+  - [Asynchronous Operations](#asynchronous-operations)
+    - [Callbacks](#callbacks)
+    - [Promises and Deferreds](#promises-and-deferreds)
 - [Examples of nice functional programming](#examples-of-nice-functional-programming)
   - [The greeting mess](#the-greeting-mess)
 
@@ -190,7 +194,7 @@ Using just `==` has no type checking:
 `14 - 7 === 7 ? 'Yep!' : 'Nope.'; // Yep!`
 
 ## Iterators
-OK:
+OK, but very much boilerplate:
 ```
 var i,
 count = [1, 2, 3],
@@ -202,7 +206,7 @@ for (i = 0; i < length; i += 1) {
 }
 ```
 
-Better:
+Better, use forEach or simmilar:
 ```
 var count = [1, 2, 3],
 text = '';
@@ -339,6 +343,40 @@ var lightbulbAPI = {
 };
 ```
 
+### Pure functions / Stateless functions
+Pure or stateless functions do not use or modify variables, objects, or arrays that were defined outside the function. So they don't depend on anything else as the input and behave always the same.
+
+```
+// pure function
+const add10 = (a) => a + 10
+
+// impure function due to external non-constants
+let x = 10
+const addx = (a) => a + x
+
+// also impure due to side-effect
+const setx = (v) => x = v
+```
+
+```
+// impure, because it changes the input variable
+var rotate = function rotate(arr) {
+  arr.push(arr.shift());
+  return arr;
+}
+
+//pure, because it returns a new object instead changing the input
+var safeRotate = function safeRotate(arr) {
+  var newArray = arr.slice(0);
+  newArray.push(newArray.shift());
+  return newArray;
+}
+```
+
+That feature is particularly useful in JavaScript applications, because you often need to manage a lot of asynchronous events. Consequently, time becomes a major factor in code organization.
+
+Because you don't have to worry about clobbering shared data, stateless functions can often be run in parallel, meaning that it's much easier to scale computation horizontally across a large number of worker nodes. In other words, stateless functions are great for high-concurrency applications.
+
 ### Recursion
 ES5 has a call stack limit! ES6 has removed it!
 
@@ -383,6 +421,15 @@ shiftToLast(1, 2, 3); // [2, 3, 1]
 
 ### Currying
 Maybe to complicated to be used because of easily made errors! Avoid when possible.
+
+### Partial Application
+```
+var multiply = (x, y) => x * y;
+var boundDouble = multiply.bind(null, 2); // null context
+boundDouble(4): // 8
+```
+
+The only disadvantage is that you won't be able to override the value of this with .call() or .apply(). If your function uses this, you shouldn't use .bind().
 
 ### Function composition (needs check if examples really function composition)
 ```
@@ -434,23 +481,6 @@ console.log(startsWithS(wordArray)); // [ 'gasp' ]
 ```
 
 Source: https://medium.com/javascript-scene/higher-order-functions-composing-software-5365cf2cbe99
-
-### Pure functions
-Pure functions depend only on the inputs of the function, and the output should be the exact same for the same input.
-
-```
-// pure function
-const add10 = (a) => a + 10
-
-// impure function due to external non-constants
-let x = 10
-const addx = (a) => a + x
-
-// also impure due to side-effect
-const setx = (v) => x = v
-```
-
-Use whenever possible, because they are clean and have no side-effects to worry about.
 
 ## Monads, Functors, and Fancy Words
 Monads can be thought of as a container for a value, and to open up the container and do something to the value, you need to map over it. `Array.filter()` is a functor/monad!. Here’s a simple example:
@@ -696,6 +726,12 @@ console.log(`
 */
 ```
 
+## Asynchronous Operations
+### Callbacks
+Callbacks are functions that you pass as arguments to be invoked when the callee has finished its job. Callbacks are commonly passed into event handlers, Ajax requests, and timers.
+
+### Promises and Deferreds
+Better examples needed.
 
 # Examples of nice functional programming
 
