@@ -85,12 +85,12 @@ payload; // content of action.payload
 ```
 
 ## Types
-#### Arrays
+### Arrays
 An ordered list of values.
 
 `const arr = [2, 4, 6];`
 
-##### filter() | map() | reduce()
+#### filter() | map() | reduce()
 ```
 arr.filter(x => x > 2); // [4, 6]
 
