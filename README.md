@@ -126,43 +126,9 @@ red.color; //red
 
 Notice that `color` is on the prototype, but changing `color` on `red` did not change color on `white`. Properties on the prototype act like defaults. When you set them on the instance, the instance value overrides the value for that instance, only.
 
-**It's important to note though that if you mutate an object or array property on the prototype, that mutation will be shared on the prototype. If you replace the whole property, the change is reflected only on that instance:**
+*It's important to note though that if you mutate an object or array property on the prototype, that mutation will be shared on the prototype. If you replace the whole property, the change is reflected only on that instance!
 
-```
-var switchProto = {
-   isOn: function isOn() {
-      return this.state;
-   },
-   toggle: function toggle() {
-      this.state = !this.state;
-      return this;
-   },
-
-   meta: {
-      name: 'Light switch'
-   },
-
-   state: false
-},
-switch1 = Object.create(switchProto):
-switch2 = Object.create(switchProto);
-
-test('Prototype mutations.', function () {
-   switch2.meta.name = 'Breaker switch';
-
-   equal(switch1.meta.name, 'Breaker switch',
-      'Object and array mutations are shared.'
-   );
-
-   switch2.meta = { name: 'Power switch' };
-
-   equal(switch1.meta.name, 'Breaker switch',
-      'Property replacement is instance-specific.'
-   );
-});
-```
-
-**Sharing state (nonmethod data) on a prototype property is commonly considered an anti-pattern in the JavaScript community, because accidental mutations of shared properties are a common source of bugs when you do it.**
+Sharing state (nonmethod data) on a prototype property is commonly considered an anti-pattern in the JavaScript community, because accidental mutations of shared properties are a common source of bugs when you do it.*
 
 #### Prototype Cloning
 Sometimes you don't want to share data on a prototype property. Instead, you want each instance to have its own unique copy of the prototype's properties.
