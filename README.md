@@ -58,7 +58,7 @@
 Hopefully best practices in modern JavaScript (ES6 and beyond).
 
 ## Variable declarations
-#### var, let & const
+### var, let & const
 `const` is the most strict declaration and can't be reassigned. It should be used as default whereever possible.
 
 `let` is the second strict declaration and can be reassigned. It should be used for iteration counter.
@@ -68,10 +68,10 @@ Hopefully best practices in modern JavaScript (ES6 and beyond).
 
 Once variables with `const` or `let` are declared, any attemp to declare them again will fail.
 
-#### Declare all variables of a function on top of it
+### Declare all variables of a function on top of it
 Because of "Hoisting" problems.
 
-#### Shorthands with ES6 destructuring
+### Shorthands with ES6 destructuring
 ```
 const [t, u] = ['a', 'b'];
 t; // 'a'
@@ -97,42 +97,34 @@ arr.filter(x => x > 2); // [4, 6]
 arr.map(x => x * 2); // [4, 8, 12]
 
 arr.reduce((acc, n) => acc + n, 0); // 10
-```
 
-`arr` itself always stays untouched!
+// arr itself gets never mutated, always a new array is returned
+```
 
 ## Objects
-In JavaScript, all types of functions, arrays, key/value pairs, and data structures in general are really objects. Even primitive types get the object treatment when you refer to them with the property access notations.
-
-```
-var user = {
-    name: 'McLeod',
-    email: 'mclead@highlander.com'
-  };
-user.email.split('@')[1]; // => highlander.com
-```
+In JavaScript, all types of functions, arrays, key/value pairs, and data structures in general are really objects.
 
 ### Prototypes
-A prototype is an object intended to model other objects after.
+A prototype is an object intended to model other objects after. It is similar to a class in that you can use it to construct any number of object instances, but different in the sense that it is an object itself. There are two ways that prototypes can be used: you can delegate access to a single, shared prototype object (called a delegate), or you can make clones of the prototype.
 
 #### Delegate Prototypes
 ```
-var switchProto = {
-   isOn: function isOn() {
-      return this.state;
-   },
-   toggle: function toggle() {
-      this.state = !this.state;
+var colorProto = {
+   setColor: function setColor(newColor) {
+      this.color = newColor;
       return this;
    },
 
-   state: false
+   color: 'white'
 },
-switch1 = Object.create(switchProto),
-switch2 = Object.create(switchProto);
+white = Object.create(colorProto),
+red = Object.create(colorProto).setColor('red');
+
+white.color; //white
+red.color; //red
 ```
 
-Notice that state is on the prototype, but changing state on switch1 did not change state on switch2. Properties on the prototype act like defaults. When you set them on the instance, the instance value overrides the value for that instance, only.
+Notice that `color` is on the prototype, but changing `color` on `red` did not change color on `white`. Properties on the prototype act like defaults. When you set them on the instance, the instance value overrides the value for that instance, only.
 
 **It's important to note though that if you mutate an object or array property on the prototype, that mutation will be shared on the prototype. If you replace the whole property, the change is reflected only on that instance:**
 
