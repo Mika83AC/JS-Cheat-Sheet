@@ -4,22 +4,24 @@
 
 - [JS-Cheat-Sheet](#js-cheat-sheet)
   - [Variable declarations](#variable-declarations)
-      - [var, let & const](#var-let--const)
-      - [Declare all variables of a function on top of it](#declare-all-variables-of-a-function-on-top-of-it)
-      - [Shorthands with ES6 destructuring](#shorthands-with-es6-destructuring)
+    - [var, let & const](#var-let--const)
+    - [Declare all variables of a function on top of it](#declare-all-variables-of-a-function-on-top-of-it)
+    - [Shorthands with ES6 destructuring](#shorthands-with-es6-destructuring)
+  - [Comparison](#comparison)
+  - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
+  - [Iterators](#iterators)
   - [Types](#types)
-      - [Arrays](#arrays)
-        - [filter() | map() | reduce()](#filter--map--reduce)
+    - [Arrays](#arrays)
+      - [filter() | map() | reduce()](#filter--map--reduce)
   - [Objects](#objects)
     - [Prototypes](#prototypes)
       - [Delegate Prototypes](#delegate-prototypes)
       - [Prototype Cloning](#prototype-cloning)
-      - [The Flyweight Pattern](#the-flyweight-pattern)
+    - [Object creation](#object-creation)
+      - [Constructor functions](#constructor-functions)
       - [Factories](#factories)
-    - [Composing Objects](#composing-objects)
-  - [Comparison](#comparison)
-  - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
-  - [Iterators](#iterators)
+      - [Prototypal Inheritance with Stamps](#prototypal-inheritance-with-stamps)
+    - [Composing objects](#composing-objects)
   - [Switch](#switch)
   - [eval()](#eval)
   - [Functions](#functions)
@@ -84,6 +86,25 @@ type; // content of action.type
 payload; // content of action.payload
 ```
 
+## Comparison
+Use the `===` comparison whenever possible. It has strict type cheching:
+```
+3 + 1 === 4; // true
+3 + 1 === '4'; // false
+```
+
+Using just `==` has no type checking:
+```
+3 + 1 == 4; // true
+3 + 1 == '4'; // true
+```
+
+## Ternaries (IF shorthand)
+`14 - 7 === 7 ? 'Yep!' : 'Nope.'; // Yep!`
+
+## Iterators
+Try to use higher-order-functions (`.forEach()`, `.reduce()` ...) instead of `for()` loops. This will avoid much boilerplate and bugs.
+
 ## Types
 ### Arrays
 An ordered list of values.
@@ -136,41 +157,42 @@ red.rgb = {r: 255, g: 0, b: 0}; // only sets red.rgb to 255,0,0 -> Property repl
 #### Prototype Cloning
 See http://chimera.labs.oreilly.com/books/1234000000262/ch03.html#prototype_cloning, but there seems to be a mistake in the example. I don't get it.
 
+### Object creation
+
+#### Constructor functions
+Don't use.
+
 #### Factories
+A factory is a method used to create other objects and avoids the drawbacks of constructor functions. Its purpose is to abstract the details of object creation from object use. In object-oriented design, factories are commonly used where a simple class is not enough.
+
 ```
 var carPrototype = {
-    gas: function gas(amount) {
-      amount = amount || 10;
+   accelerate: function accelerate(amount) {
       this.mph += amount;
       return this;
-    },
-    brake: function brake(amount) {
-      amount = amount || 10;
-      this.mph = ((this.mph - amount) < 0)? 0
-        : this.mph - amount;
+   },
+   brake: function brake(amount) {
+      this.mph = ((this.mph - amount) < 0)? 0 : this.mph - amount;
       return this;
-    },
-    color: 'pink',
-    direction: 0,
-    mph: 0
-  },
+   },
+   color: 'pink',
+   direction: 0,
+   mph: 0
+},
 
-  car = function car(options) {
-    return extend(Object.create(carPrototype), options);
-  },
+car = function car(options) {
+   return Object.assign(Object.create(carPrototype), options);
+},
 
-  myCar = car({
-    color: 'red'
-  });
-
-test('Flyweight factory with cloning', function () {
-  ok(Object.getPrototypeOf(myCar).gas,
-    'Prototype methods are shared.'
-  );
-});
+myCar = car({color: 'red'});
 ```
 
-### Composing Objects
+#### Prototypal Inheritance with Stamps
+Claims to combine the best of all object creation variants (delegate prototype, instance state, encapsulation).
+
+See: https://github.com/stampit-org/stampit
+
+### Composing objects
 Objects can be easily composed together into new objects with `Object.assign()`.
 
 ```
@@ -180,51 +202,6 @@ const c = Object.assign({}, oA, oB); // c becomes { a: 'a', b: 'b' }
 ```
 
 Note that when you use `Object.assign()`, you must pass a destination object as the first parameter. It is the object that properties will be copied to. If you forget, and omit the destination object, the object you pass in the first argument will be mutated.
-
-## Comparison
-Use the `===` comparison whenever possible. It has strict type cheching:
-```
-3 + 1 === 4; // true
-3 + 1 === '4'; // false
-```
-
-Using just `==` has no type checking:
-```
-3 + 1 == 4; // true
-3 + 1 == '4'; // true
-```
-
-## Ternaries (IF shorthand)
-`14 - 7 === 7 ? 'Yep!' : 'Nope.'; // Yep!`
-
-## Iterators
-OK, but very much boilerplate:
-```
-var i,
-count = [1, 2, 3],
-length = count.length,
-text = '';
-
-for (i = 0; i < length; i += 1) {
-   text += count[i] + ' ';
-}
-```
-
-Better, use forEach or simmilar:
-```
-var count = [1, 2, 3],
-text = '';
-
-count.forEach(function (number) {
-   text += number + ' ';
-});
-```
-
-And perhaps even better:
-```
-var count = [1, 2, 3];
-var text = count.reduce((sum, x) => sum + x + ' ', '');
-```
 
 ## Switch
 Simple to miss the `break;` statement which leads to difficult to find bugs.
