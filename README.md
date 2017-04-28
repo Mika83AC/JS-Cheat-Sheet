@@ -10,9 +10,8 @@
   - [Comparison](#comparison)
   - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
   - [Iterators](#iterators)
-  - [Types](#types)
-    - [Arrays](#arrays)
-      - [filter() | map() | reduce()](#filter--map--reduce)
+  - [Arrays](#arrays)
+    - [filter() | map() | reduce()](#filter--map--reduce)
   - [Objects](#objects)
     - [Prototypes](#prototypes)
       - [Delegate Prototypes](#delegate-prototypes)
@@ -105,13 +104,12 @@ Using just `==` has no type checking:
 ## Iterators
 Try to use higher-order-functions (`.forEach()`, `.reduce()` ...) instead of `for()` loops. This will avoid much boilerplate and bugs.
 
-## Types
-### Arrays
+## Arrays
 An ordered list of values.
 
 `const arr = [2, 4, 6];`
 
-#### filter() | map() | reduce()
+### filter() | map() | reduce()
 ```
 arr.filter(x => x > 2); // [4, 6]
 
