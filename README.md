@@ -21,6 +21,7 @@
     - [Object creation](#object-creation)
       - [Constructor functions](#constructor-functions)
       - [Factories](#factories)
+      - [Factory Inheritance](#factory-inheritance)
       - [Prototypal Inheritance with Stamps](#prototypal-inheritance-with-stamps)
     - [Composing objects](#composing-objects)
   - [Functions](#functions)
