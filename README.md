@@ -54,6 +54,9 @@
     - [Callbacks](#callbacks)
     - [Promises and Deferreds](#promises-and-deferreds)
   - [Modules](#modules)
+    - [Node-style Modules](#node-style-modules)
+    - [ES6 Modules](#es6-modules)
+  - [Interfaces](#interfaces)
 - [Examples of nice functional programming](#examples-of-nice-functional-programming)
   - [The greeting mess](#the-greeting-mess)
 
@@ -761,6 +764,7 @@ Better examples needed.
 ## Modules
 Modules in the browser use a wrapping function to encapsulate private data in a closure (for example, with an IIFE; see “Immediately Invoked Function Expressions”). Without the encapsulated function scope provided by the IIFE, other scripts could try to use the same variable and function names, which could cause some unexpected behavior.
 
+This approach works everywhere, but can only load "all or nothing":
 ```
 var app = {};
 
@@ -799,6 +803,25 @@ app.modulePicture();
 ```
 
 Here, that variable is called `exports`, for compatibility with CommonJS (see “Node-Style Modules” for an explanation of CommonJS). If exports does not exist, you can fall back on `window`:
+
+### Node-style Modules
+Maybe the best because most popular until ES6 modules arrive in the wild.
+```
+'use strict';
+var foo = function foo () {
+  return true;
+};
+
+exports.foo = foo;
+```
+
+Then use require() (require.js) to import your module and assign it to a local variable. You can specify the name of a module in the list of installed Node modules or specify a path to the module using relative paths.
+
+### ES6 Modules
+Watch closely when they will become supported! Best approach if it will be available.
+
+## Interfaces
+Interfaces are one of the primary tools of modular software design. Interfaces define a contract that an implementing module will fulfill. For instance, a common problem in JavaScript applications is that the application stops functioning if the Internet connection is lost. In order to solve that problem, you could use local storage and sync changes periodically with the server. Unfortunately, some browsers don't support local storage, so you may have to fall back to cookies or even Flash (depending on how much data you need to store).
 
 
 # Examples of nice functional programming
