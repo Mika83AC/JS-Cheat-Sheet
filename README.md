@@ -53,6 +53,7 @@
   - [Asynchronous Operations](#asynchronous-operations)
     - [Callbacks](#callbacks)
     - [Promises and Deferreds](#promises-and-deferreds)
+  - [Modules](#modules)
 - [Examples of nice functional programming](#examples-of-nice-functional-programming)
   - [The greeting mess](#the-greeting-mess)
 
@@ -756,6 +757,49 @@ Callbacks are functions that you pass as arguments to be invoked when the callee
 
 ### Promises and Deferreds
 Better examples needed.
+
+## Modules
+Modules in the browser use a wrapping function to encapsulate private data in a closure (for example, with an IIFE; see “Immediately Invoked Function Expressions”). Without the encapsulated function scope provided by the IIFE, other scripts could try to use the same variable and function names, which could cause some unexpected behavior.
+
+```
+var app = {};
+
+// Module Storage
+(function (exports) {
+
+   (function (exports) {
+      var api = {
+         moduleStorage: function test() {
+            console.log('I\'m the storage module.');
+         }
+      };
+
+      Object.assign(exports, api);
+   }((typeof exports === 'undefined') ? window : exports));
+
+}(app));
+
+// Module Picture
+(function (exports) {
+
+   (function (exports) {
+      var api = {
+         modulePicture: function test() {
+            console.log('I\'m the picture module.');
+         }
+      };
+
+      Object.assign(exports, api);
+   }((typeof exports === 'undefined') ? window : exports));
+
+}(app));
+
+app.moduleStorage();
+app.modulePicture();
+```
+
+Here, that variable is called `exports`, for compatibility with CommonJS (see “Node-Style Modules” for an explanation of CommonJS). If exports does not exist, you can fall back on `window`:
+
 
 # Examples of nice functional programming
 
