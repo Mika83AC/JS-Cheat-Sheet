@@ -9,6 +9,7 @@
     - [Shorthands with ES6 destructuring](#shorthands-with-es6-destructuring)
     - [Block-scoping](#block-scoping)
     - [Hoisting](#hoisting)
+  - [Closures](#closures)
   - [Comparison](#comparison)
   - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
   - [Iterators](#iterators)
@@ -127,6 +128,19 @@ console.log( a ); // undefined
 var a = 2;
 ```
 
+## Closures
+Closure is when a function can remember and access its lexical scope even when it's invoked outside its lexical scope.
+
+The most common closure mistake:
+```
+for (var i=1; i<=5; i++) {
+	setTimeout( function timer(){
+		console.log( i );
+	}, i*1000 );
+}
+
+// Results in '6' printed out 5 times!
+```
 
 ## Comparison
 Use the `===` comparison whenever possible. It has strict type cheching:
