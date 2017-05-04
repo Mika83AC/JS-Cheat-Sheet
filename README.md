@@ -7,13 +7,15 @@
     - [var, let & const](#var-let--const)
     - [Declare all variables of a function on top of it](#declare-all-variables-of-a-function-on-top-of-it)
     - [Shorthands with ES6 destructuring](#shorthands-with-es6-destructuring)
+    - [Block-scoping](#block-scoping)
+    - [Hoisting](#hoisting)
   - [Comparison](#comparison)
   - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
   - [Iterators](#iterators)
   - [Arrays](#arrays)
     - [filter() | map() | reduce()](#filter--map--reduce)
   - [Switch](#switch)
-  - [eval()](#eval)
+  - [eval() and with](#eval-and-with)
   - [Objects](#objects)
     - [Prototypes](#prototypes)
       - [Delegate Prototypes](#delegate-prototypes)
@@ -92,6 +94,40 @@ type; // content of action.type
 payload; // content of action.payload
 ```
 
+### Block-scoping
+Important for the Garbage Collector to work effectiv.
+
+```
+function process(data) {
+	// do something interesting
+}
+
+// anything declared inside this block can go away after! But only does, if block-scoped! Otherwise it will stay because the click function has a closure over the entire scope!
+{
+	let someReallyBigData = { .. };
+	process( someReallyBigData );
+}
+
+var btn = document.getElementById( "my_button" );
+btn.addEventListener("click", function click(evt) {
+	console.log("button clicked");
+});
+```
+
+### Hoisting
+Declaration always pulled up to top of scope, but assignment always takes in place.
+
+```
+a = 2;
+var a;
+console.log( a ); // 2
+```
+```
+console.log( a ); // undefined
+var a = 2;
+```
+
+
 ## Comparison
 Use the `===` comparison whenever possible. It has strict type cheching:
 ```
@@ -150,8 +186,8 @@ function doAction(action) {
 }
 ```
 
-## eval()
-Simply don't use because it can be a security problem.
+## eval() and with
+Simply don't use them because it can be a security problem (`eval()`) and leads to poor performance.
 
 ## Objects
 In JavaScript, all types of functions, arrays, key/value pairs, and data structures in general are really objects.
