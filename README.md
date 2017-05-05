@@ -281,7 +281,7 @@ myCar = car({color: 'red'});
 ```
 
 #### Factory "Inheritance"
-Not shure if this is a 'best practice'!
+Not sure if this is a 'best practice'!
 
 ```
 var BeingProto = {
