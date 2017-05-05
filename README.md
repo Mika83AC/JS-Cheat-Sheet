@@ -5,7 +5,6 @@
 - [JS-Cheat-Sheet](#js-cheat-sheet)
   - [Variable declarations](#variable-declarations)
     - [var, let & const](#var-let--const)
-    - [Declare all variables of a function on top of it](#declare-all-variables-of-a-function-on-top-of-it)
     - [Shorthands with ES6 destructuring](#shorthands-with-es6-destructuring)
     - [Block-scoping](#block-scoping)
     - [Hoisting](#hoisting)
@@ -15,12 +14,13 @@
   - [Ternaries (IF shorthand)](#ternaries-if-shorthand)
   - [Iterators](#iterators)
   - [Arrays](#arrays)
-    - [filter() | map() | reduce()](#filter--map--reduce)
+    - [Helpful array methods](#helpful-array-methods)
   - [Switch](#switch)
   - [eval() and with](#eval-and-with)
   - [Objects](#objects)
     - [Prototypes](#prototypes)
       - [Delegate Prototypes](#delegate-prototypes)
+    - [Propertie mutation/replacement](#propertie-mutationreplacement)
       - [Prototype Cloning](#prototype-cloning)
     - [Object creation](#object-creation)
       - [Constructor functions](#constructor-functions)
@@ -79,9 +79,6 @@ Hopefully best practices in modern JavaScript (ES6 and beyond).
 
 
 Once variables with `const` or `let` are declared, any attemp to declare them again will fail.
-
-### Declare all variables of a function on top of it
-Because of "Hoisting" problems.
 
 ### Shorthands with ES6 destructuring
 ```
@@ -182,7 +179,7 @@ An ordered list of values.
 
 `const arr = [2, 4, 6];`
 
-### filter() | map() | reduce()
+### Helpful array methods
 ```
 arr.filter(x => x > 2); // [4, 6]
 
@@ -192,6 +189,8 @@ arr.reduce((acc, n) => acc + n, 0); // 10
 
 // arr itself gets never mutated, always a new array is returned
 ```
+
+More: https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array
 
 ## Switch
 Simple to miss the `break;` statement which leads to difficult to find bugs.
@@ -228,17 +227,15 @@ A prototype is an object intended to model other objects after. It is similar to
 #### Delegate Prototypes
 In JavaScript, objects have an internal reference to a delegate prototype. When an object is queried for a property or method, the JavaScript engine first checks the object. If the key doesn't exist on that object, it checks the delegate prototype, and so on up the prototype chain. The prototype chain typically ends at the Object prototype.
 
+### Propertie mutation/replacement
 ```
 var colorProto = {
    setColorName: function setColorName(newColor) {
       this.colorName = newColor;
       return this;
    },
-
    colorName: 'white',
-   rgb: {
-      r: 255, g: 255, b: 255
-   }
+   rgb: { r: 255, g: 255, b: 255 }
 },
 white = Object.create(colorProto),
 red = Object.create(colorProto).setColorName('red');
@@ -247,7 +244,6 @@ white.colorName; //white
 red.colorName; //red
 
 red.rgb.r = 0; // also sets white.rgb.r to 0 -> Object and array mutations are shared!
-
 red.rgb = {r: 255, g: 0, b: 0}; // only sets red.rgb to 255,0,0 -> Property replacement is instance-specific!
 ```
 
