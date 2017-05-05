@@ -227,7 +227,7 @@ A prototype is an object intended to model other objects after. It is similar to
 #### Delegate Prototypes
 In JavaScript, objects have an internal reference to a delegate prototype. When an object is queried for a property or method, the JavaScript engine first checks the object. If the key doesn't exist on that object, it checks the delegate prototype, and so on up the prototype chain. The prototype chain typically ends at the Object prototype.
 
-### Propertie mutation/replacement
+#### Propertie mutation/replacement
 ```
 var colorProto = {
    setColorName: function setColorName(newColor) {
@@ -280,7 +280,9 @@ car = function car(options) {
 myCar = car({color: 'red'});
 ```
 
-#### Factory Inheritance
+#### Factory "Inheritance"
+Not shure if this is a 'best practice'!
+
 ```
 var BeingProto = {
    // Members
