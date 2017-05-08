@@ -283,55 +283,29 @@ myCar = car({color: 'red'});
 #### Factory "Inheritance"
 Not sure if this is a 'best practice'!
 
+Needs to NOT USE `Object.create`, as the input to `Object.create` gets shadowed and is NOT in the output of `JSON.stringify`!!
+
 ```
-var BeingProto = {
-   // Members
-   name: '',
-   alive: true,
-
-   // Methods
-   die: function die() {
-      this.alive = false;
-      console.log(this.name + ' died');
-      return this;
-   }
+var dbObjProto = {
+   id: 0,
+   parentId: 0,
+   insertUser: '',
+   updateUser: ''
 }
-var BeingFactory = function BeingFactory(options) {
-   return Object.assign(Object.create(BeingProto), options);
+var DBObjFactory = function DBObjFactory(options) {
+   return Object.assign({}, dbObjProto, options);
 }
 
-var AnimalProto = {
-   // Members
-   walking: false,
-
-   // Methods
-   walk: function walk() {
-      this.walking = true;
-      console.log(this.name + ' walks');
-      return this;
-   },
-   rest: function rest() {
-      this.walking = false;
-      console.log(this.name + ' rests');
-      return this;
-   },
-   kill: function kill(beeing) {
-      console.log(this.name + ' kills the ' + beeing.name);
-      beeing.die();
-   }
+var articleProto = {
+   articleNo: '',
+   description: ''
 }
-var AnimalFactory = function AnimalFactory(options) {
-   return Object.assign(Object.create(AnimalProto), BeingProto, options);
+var ArticleFactory = function ArticleFactory(options) {
+   return Object.assign({}, dbObjProto, articleProto, options);
 }
 
-
-var antilope = AnimalFactory({name: 'Antilope'});
-antilope.walk();
-
-var tiger = AnimalFactory({name: 'Tiger'});
-tiger.walk();
-tiger.kill(antilope);
-tiger.rest();
+var dbObjProto = DBObjFactory({id: 2});
+var article = ArticleFactory({id: 8, description: 'Plane'});
 ```
 
 #### Prototypal Inheritance with Stamps
